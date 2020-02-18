@@ -165,3 +165,4 @@ fabric.properties
 # End of https://www.gitignore.io/api/git,symfony,phpstorm
 symfony
 .env.local
+.DS_Store
