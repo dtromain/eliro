@@ -1,3 +1,6 @@
 # eliro
 https://trello.com/b/zWmCpxrq/eliro
-php -S localhost:8001 -t public
+
+## run server
+
+php -S http://localhost:8001 -t public
