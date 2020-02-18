@@ -33,8 +33,9 @@ class Campus
      */
     private $participants;
 
-    public function __construct()
+    public function __construct(string $name)
     {
+        $this->name = $name;
         $this->events = new ArrayCollection();
         $this->participants = new ArrayCollection();
     }
