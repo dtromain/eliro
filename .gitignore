@@ -163,3 +163,5 @@ fabric.properties
 /web/js/
 
 # End of https://www.gitignore.io/api/git,symfony,phpstorm
+symfony
+.env.local
