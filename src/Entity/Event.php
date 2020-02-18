@@ -45,7 +45,7 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\State", inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $state;
 

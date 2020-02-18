@@ -14,21 +14,19 @@ class EventFixtures extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $event = new Event();
 
-            //Generate a timestamp using mt_rand.
-            $timestamp = mt_rand(1, time());
-            //Format that timestamp into a readable date string.
-            $randomDate = date("d M Y", $timestamp);
+            try {
+                $randomDate = new \DateTime(sprintf('-%d days', rand(-30, 30)));
+            } catch (\Exception $e) {
+            }
             $event->setStarttime($randomDate);
 
-            $event->setName('Soirée du '.$randomDate);
+            $event->setName('Soirée du '.$randomDate->format('Y-m-d H:i:s'));
 
             $event->setDuration(mt_rand(10, 300));
 
-            $event->setLastInscriptionTime($randomDate)->modify('-1 day');
+            $event->setLastInscriptionTime($randomDate->modify('-1 day'));
 
-            $event->setState('en creation');
-
-            $event->setLocation('chez moi');
+            $event->setInformation('');
 
             $manager->persist($event);
         }
