@@ -3,9 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+    
+
+
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
