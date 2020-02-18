@@ -65,7 +65,7 @@ class Event
     private $participants;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Participant", inversedBy="events")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participant")
      */
     private $planner;
 
