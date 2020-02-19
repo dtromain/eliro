@@ -1,7 +1,39 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
 {% block title %}Profile{% endblock %}
 
 {% block page_title %}Profile{% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800 text-center">Profile</h1>
+
+        {{ form_start(form) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.firstname) }}
+                </div>
+                <div class="col" id="some-custom-id">
+                    {{ form_row(form.lastname) }}
+                </div>
+            </div>
+            {{ form_row(form.phone) }}
+            {{ form_row(form.mail) }}
+            {{ form_row(form.username) }}
+            {{ form_row(form.old_password) }}
+            {{ form_row(form.plain_password) }}
+        {{ form_end(form) }}
+
+
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}

@@ -2,19 +2,50 @@
 
 namespace App\Controller;
 
+use App\Form\ProfileFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ProfileController extends AbstractController
 {
     /**
      * @Route("/profile", name="profile")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @return RedirectResponse|Response
      */
-    public function index()
+    public function index(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $participant = $this->getUser();
 
-        return $this->render('profile/index.html.twig', ['participant' => $participant]);
+        $form = $this->createForm(ProfileFormType::class, $participant);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $plain_password = $form->get('plain_password')->getData();
+
+            if($plain_password) {
+                if($encoder->isPasswordValid($participant, $form->get('old_password')->getData())) {
+                    $encoded_password = $encoder->encodePassword($participant, $plain_password);
+                    $participant->setPassword($encoded_password);
+                } else {
+
+                }
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($participant);
+            $entityManager->flush();
+            return $this->redirectToRoute('profile');
+
+        }
+
+        return $this->render('profile/index.html.twig', ['form' => $form->createView(),]);
     }
 }

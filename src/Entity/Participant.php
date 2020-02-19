@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -23,21 +24,24 @@ class Participant implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotBlank(message="Firstname field cannot be empty !")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotBlank(message="Lastname field cannot be empty !")
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $phone;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
+     * @Assert\NotBlank(message="Email field cannot be empty !")
      */
     private $mail;
 
@@ -47,7 +51,7 @@ class Participant implements UserInterface
     private $isAdmin;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=false)
      */
     private $isConnected;
 
@@ -62,12 +66,14 @@ class Participant implements UserInterface
     private $campus;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=50, nullable=false, unique=true)
+     * @Assert\NotBlank(message="Username field cannot be empty !")
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotBlank(message="Password field cannot be empty !")
      */
     private $password;
 
@@ -116,7 +122,7 @@ class Participant implements UserInterface
         return $this->phone;
     }
 
-    public function setPhone(string $phone): self
+    public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
 
