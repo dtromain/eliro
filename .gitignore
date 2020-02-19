@@ -166,3 +166,4 @@ fabric.properties
 symfony
 .env.local
 .DS_Store
+.idea/*
