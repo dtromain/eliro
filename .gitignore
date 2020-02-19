@@ -168,5 +168,3 @@ symfony.lock
 .env.local
 .DS_Store
 .idea/*
-composer.lock
-composer.lock
