@@ -3,42 +3,66 @@
 {% block title %}Hello EventController!{% endblock %}
 
 {% block content %}
-    <table class="table table-bordered table-hover table-striped tablesorter" border="1">
-        <tr>
-            <th>Nom</th>
-            <th>date de debut</th>
-            <th>durée</th>
-            <th>inscription bloqué le</th>
-            <th>etat</th>
-            <th>lieux</th>
-            <th>nombre de paricipants</th>
-            <th>organisateur</th>
-        </tr>
-        {% for event in list %}
-            <tr>
-                <td> {{ event.name }} </td>
-                <td> {{ event.starttime | date('d/m')}} </td>
-                <td> {{ ((event.duration*60)-3600) | date('H')}} h {{ ((event.duration*60)-3600) | date('i')}}</td>
-                <td> {{ event.lastInscriptionTime | date('d/m') }} </td>
-                <td> {{ event.state }} </td>
-                <td> {{ event.location }} </td>
-                <td> {{ event.participants.count() }} </td>
-                <td> {{ event.planner }} </td>
-
-            </tr>
-        {% endfor %}
 
 
+<div class="container-fluid">
 
-    </table>
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800 text-center">Event List</h1>
 
-    <div class="bs-example">
-        <ul class="pagination pagination-lg">
-            <li class="disabled"><a href="#">&laquo;</a></li>
-            <li class="active"><a href="?page=1">1</a></li>
-            <li><a href="?page=2">2</a></li>
-            <li><a href="?page=3">3</a></li>
-            <li><a href="#">&raquo;</a></li>
-        </ul>
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped tablesorter" border="1">
+                        <tr>
+                            <th>Nom</th>
+                            <th>date de debut</th>
+                            <th>durée</th>
+                            <th>inscription bloqué le</th>
+                            <th>etat</th>
+                            <th>lieux</th>
+                            <th>nombre de paricipants</th>
+                            <th>organisateur</th>
+                        </tr>
+                        {% for event in list %}
+                            <tr>
+                                <td> {{ event.name }} </td>
+                                <td> {{ event.starttime | date('d/m')}} </td>
+                                <td> {{ ((event.duration*60)-3600) | date('H')}} h {{ ((event.duration*60)-3600) | date('i')}}</td>
+                                <td> {{ event.lastInscriptionTime | date('d/m') }} </td>
+                                <td> {{ event.state }} </td>
+                                <td> {{ event.location }} </td>
+                                <td> {{ event.participants.count() }} </td>
+                                <td> {{ event.planner }} </td>
+
+                            </tr>
+                        {% endfor %}
+
+
+
+                    </table>
+                    <div>
+                        <div class="bs-dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                            <ul class="pagination">
+                                <li class="paginate_button page-item previous disabled"><a href="#" class="page-link">&laquo;</a></li>
+                                <li class="paginate_button page-item active"><a href="?page=1"class="page-link">1</a></li>
+                                <li class="paginate_button page-item "><a href="?page=2"class="page-link">2</a></li>
+                                <li class="paginate_button page-item "><a href="?page=3"class="page-link">3</a></li>
+                                <li class="paginate_button page-item next"><a href="#"class="page-link">&raquo;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
     </div>
-{% endblock %}
+    <!-- /.container-fluid -->
+    {% endblock %}
