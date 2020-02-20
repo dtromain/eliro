@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un évènement{% endblock %}
+
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800 text-center">Manage campuses</h1>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.starttime) }}
+                    {{ form_row(form.lastInscriptionTime) }}
+                    {{ form_row(form.duration) }}
+                    {{ form_row(form.information) }}
+                    {{ form_row(form.campus) }}
+
+                    {{ form_row(form.location) }}
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

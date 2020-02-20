@@ -26,16 +26,16 @@ class ProfileFormType extends AbstractType
             ->add('username', TextType::class)
             ->add('old_password', PasswordType::class, [
                 'mapped'=>false,
-                'required' => false,
+                'required' => false
             ])
             ->add('plain_password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => false,
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
                 'mapped'=>false,
+                'invalid_message' => 'Les champs mot de passe et confirmation ne correspondent pas'
             ])
             ->add('save', SubmitType::class, ['label' => 'Save'])
         ;
