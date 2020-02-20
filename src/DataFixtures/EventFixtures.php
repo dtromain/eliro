@@ -12,7 +12,7 @@ class EventFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         // create 20 products! Bam!
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $event = new Event();
 
             try {

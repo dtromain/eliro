@@ -51,6 +51,11 @@ class Location
      */
     private $events;
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     public function __construct()
     {
         $this->events = new ArrayCollection();

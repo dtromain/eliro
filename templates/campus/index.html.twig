@@ -28,7 +28,7 @@
                             {{ form_start(form) }}
                             <tr>
                                 <td>{{ form_widget(form.name) }}</td>
-                                <td>{{ form_widget(form.save) }}</td>
+                                <td>{{ form_widget(form.save, {'attr': {'id': 'save_btn'}}) }}</td>
                             </tr>
                             {{ form_end(form) }}
                             {% for campus in campuses %}
@@ -51,4 +51,10 @@
 
     </div>
     <!-- /.container-fluid -->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $save_btn =
+    </script>
 {% endblock %}

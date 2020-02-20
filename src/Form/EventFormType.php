@@ -25,8 +25,13 @@ class EventFormType extends AbstractType
             ->add('duration', NumberType::class)
             ->add('lastInscriptionTime', DateType::class)
             ->add('information', TextType::class)
-            ->add('location', EntityType::class, ['class' => Location::class])
-            ->add('addlocation', LocationFormType::class, ['mapped'=>false])
+            ->add('location', EntityType::class, [
+                'class' => Location::class
+            ])
+            ->add('addlocation', LocationFormType::class, [
+                'mapped'=>false,
+                'required'=>false
+            ])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class
             ])

@@ -13,11 +13,21 @@ use Doctrine\ORM\EntityManagerInterface;
 class EventController extends AbstractController
 {
     /**
-     * @Route("/event", name="event")
+     * @Route("/", name="event")
      */
-    public function listEvents(EntityManagerInterface $em,$page =2,$itemPerPage =10)
+    public function listEvents(EntityManagerInterface $em, Request $request)
     {
-        $page = $_GET["page"];
+        if($request->query->get('page')) {
+            $page = $request->query->get('page');
+        } else {
+            $page = 1;
+        }
+
+        if($request->query->get('itemPerPage')) {
+            $itemPerPage = $request->query->get('itemPerPage');
+        } else {
+            $itemPerPage = 10;
+        }
 
         $list = $em->getRepository(Event::class)->findAllByPage($page, $itemPerPage);
 
