@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Event|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,21 @@ class EventRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Event::class);
+    }
+
+    public function findAllByPage($page, $itemPerPage)
+    {
+        /** @var QueryBuilder $qb */
+        $qb =  $this->createQueryBuilder('e');
+
+        return $qb
+            ->where('e.starttime > :now')
+            ->setParameter('now', new \DateTime())
+            ->setMaxResults($itemPerPage)
+            ->setFirstResult(($page - 1) * $itemPerPage)
+            ->orderBy('e.starttime')
+            ->getQuery()
+            ->getResult();
     }
 
     // /**
