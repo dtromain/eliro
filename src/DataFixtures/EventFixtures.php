@@ -23,7 +23,7 @@ class EventFixtures extends Fixture
 
             $event->setName('Soirée n°'.$i.' du '.$randomDate->format('Y-m-d H:i:s'));
 
-            $event->setDuration(mt_rand(10, 300));
+            $event->setDuration(mt_rand(1, 30)*10);
 
             $event->setLastInscriptionTime($randomDate->modify('-1 day'));
 
