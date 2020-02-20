@@ -12,7 +12,7 @@ class EventController extends AbstractController
     /**
      * @Route("/event", name="event")
      */
-    public function listEvents(EntityManagerInterface $em,$page =2,$itemPerPage =10)
+    public function listEvents(EntityManagerInterface $em,int $page =1,int $itemPerPage =10)
     {
         $page = $_GET["page"];
 
