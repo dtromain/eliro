@@ -16,14 +16,14 @@
         </tr>
         {% for event in list %}
             <tr>
-                <td> {{ event.getName() }} </td>
-                <td> {{ event.getStarttime() |date('d/m')}} </td>
-                <td> {{ event.getDuration() |date('H:i')}} </td>
-                <td> {{ event.getLastInscriptionTime()|date('d/m') }} </td>
-                <td> {{ event.getState() }} </td>
-                <td> {{ event.getLocation() }} </td>
-                <td> {{ event.getParticipants().count() }} </td>
-                <td> {{ event.getPlanner() }} </td>
+                <td> {{ event.name }} </td>
+                <td> {{ event.starttime | date('d/m')}} </td>
+                <td> {{ ((event.duration*60)-3600) | date('H')}} h {{ ((event.duration*60)-3600) | date('i')}}</td>
+                <td> {{ event.lastInscriptionTime | date('d/m') }} </td>
+                <td> {{ event.state }} </td>
+                <td> {{ event.location }} </td>
+                <td> {{ event.participants.count() }} </td>
+                <td> {{ event.planner }} </td>
 
             </tr>
         {% endfor %}
