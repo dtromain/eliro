@@ -90,7 +90,12 @@
                                     </a>
                                 </li>
                             {% else %}
-                                <a class="nav-item active" href="{{ path('app_login') }}">Login</a>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_login') }}">
+                                        <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Login
+                                    </a>
+                                </li>
                             {% endif %}
 
                     </ul>
