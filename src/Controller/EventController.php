@@ -12,9 +12,11 @@ class EventController extends AbstractController
     /**
      * @Route("/event", name="event")
      */
-    public function listEvents(EntityManagerInterface $em)
+    public function listEvents(EntityManagerInterface $em,$page =2,$itemPerPage =10)
     {
-        $list = $em->getRepository(Event::class)->findAllByPage(1, 10);
+        $page = $_GET["page"];
+
+        $list = $em->getRepository(Event::class)->findAllByPage($page, $itemPerPage);
 
         return $this->render('event/index.html.twig', [
             'list' => $list
