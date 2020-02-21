@@ -35,14 +35,13 @@
                                 <td> {{ event.starttime | date('d/m')}} </td>
                                 <td> {{ ((event.duration*60)-3600) | date('H')}} h {{ ((event.duration*60)-3600) | date('i')}}</td>
                                 <td> {{ event.lastInscriptionTime | date('d/m') }} </td>
-                                <td> {{ event.state }} </td>
+                                <td> {{ event.state.label }} </td>
                                 <td> {{ event.location }} </td>
                                 <td> {{ event.participants.count() }} </td>
                                 <td> {{ event.planner }} </td>
                                 {# inscription/desistement#}
                                 <td>
-                                    {% if  event.lastInscriptionTime> "now"%}
-
+                                    {% if  event.lastInscriptionTime | date("m/d/Y") > "now" | date("m/d/Y")%}
                                         {% if  event.participants.contains(app.user)%}
                                             <a href="#">S'inscrire</a>
                                         {% else %}
