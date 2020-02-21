@@ -12,7 +12,7 @@ class EventFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         // create 20 products! Bam!
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $event = new Event();
 
             try {
@@ -22,10 +22,11 @@ class EventFixtures extends Fixture
             $event->setStarttime($randomDate);
 
             $event->setName('Soirée n°'.$i.' du '.$randomDate->format('Y-m-d H:i:s'));
-
+            $lastinscriptiondate = $randomDate;
+            $lastinscriptiondate->modify('-1 day');
             $event->setDuration(mt_rand(1, 30)*10);
 
-            $event->setLastInscriptionTime($randomDate->modify('-1 day'));
+            $event->setLastInscriptionTime($lastinscriptiondate);
 
             $event->setInformation('');
 
