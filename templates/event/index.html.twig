@@ -39,6 +39,19 @@
                                 <td> {{ event.location }} </td>
                                 <td> {{ event.participants.count() }} </td>
                                 <td> {{ event.planner }} </td>
+                                {# inscription/desistement#}
+                                <td>
+                                    {% if  event.lastInscriptionTime> "now"%}
+
+                                        {% if  event.participants.contains(app.user)%}
+                                            <a href="#">S'inscrire</a>
+                                        {% else %}
+                                            <a href="#">Se désister</a>
+                                        {% endif %}
+                                    {% else %}
+                                        inscription close
+                                    {% endif %}
+                                </td>
 
                             </tr>
                         {% endfor %}
