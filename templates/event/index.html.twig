@@ -3,38 +3,77 @@
 {% block title %}Events{% endblock %}
 
 {% block content %}
-    <table class="table table-bordered table-hover table-striped tablesorter" border="1">
-        <tr>
-            <th>Nom</th>
-            <th>date de debut</th>
-            <th>durée</th>
-            <th>inscription bloqué le</th>
-            <th>etat</th>
-            <th>lieux</th>
-            <th>nombre de paricipants</th>
-            <th>organisateur</th>
-        </tr>
-        {% for event in list %}
-            <tr>
-                <td> {{ event.name }} </td>
-                <td> {{ event.starttime | date('d/m')}} </td>
-                <td> {{ ((event.duration*60)-3600) | date('H')}} h {{ ((event.duration*60)-3600) | date('i')}}</td>
-                <td> {{ event.lastInscriptionTime | date('d/m') }} </td>
-                <td> {{ event.state }} </td>
-                <td> {{ event.location }} </td>
-                <td> {{ event.participants.count() }} </td>
-                <td> {{ event.planner }} </td>
 
-            </tr>
-        {% endfor %}
-    </table>
-    <div class="bs-example">
-        <ul class="pagination pagination-lg">
-            <li class="disabled"><a href="#">&laquo;</a></li>
-            <li class="active"><a href="?page=1">1</a></li>
-            <li><a href="?page=2">2</a></li>
-            <li><a href="?page=3">3</a></li>
-            <li><a href="#">&raquo;</a></li>
-        </ul>
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800 text-center">Event List</h1>
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped tablesorter" border="1">
+                        <tr>
+                            <th>Nom</th>
+                            <th>date de debut</th>
+                            <th>durée</th>
+                            <th>inscription bloqué le</th>
+                            <th>etat</th>
+                            <th>lieux</th>
+                            <th>nombre de paricipants</th>
+                            <th>organisateur</th>
+                        </tr>
+                        {% for event in list %}
+                            <tr>
+                                <td> {{ event.name }} </td>
+                                <td> {{ event.starttime | date('d/m')}} </td>
+                                <td> {{ ((event.duration*60)-3600) | date('H')}} h {{ ((event.duration*60)-3600) | date('i')}}</td>
+                                <td> {{ event.lastInscriptionTime | date('d/m') }} </td>
+                                <td> {{ event.state.label }} </td>
+                                <td> {{ event.location }} </td>
+                                <td> {{ event.participants.count() }} </td>
+                                <td> {{ event.planner }} </td>
+                                {# inscription/desistement#}
+                                <td>
+                                    {% if  event.lastInscriptionTime | date("m/d/Y") > "now" | date("m/d/Y")%}
+                                        {% if  event.participants.contains(app.user)%}
+                                            <a href="#">S'inscrire</a>
+                                        {% else %}
+                                            <a href="#">Se désister</a>
+                                        {% endif %}
+                                    {% else %}
+                                        inscription close
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+
+
+
+                    </table>
+                    <div>
+                        <div class="bs-dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                            <ul class="pagination">
+                                <li class="paginate_button page-item previous disabled"><a href="#" class="page-link">&laquo;</a></li>
+                                {% for i in 1..numberOfPage  %}
+                                    <li class="paginate_button page-item"><a href="?page={{ i }}"class="page-link">{{ i }}</a></li>
+                                {% endfor %}
+                                <li class="paginate_button page-item next"><a href="#"class="page-link">&raquo;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
     </div>
-{% endblock %}
+    <!-- /.container-fluid -->
+    {% endblock %}
