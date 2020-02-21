@@ -44,6 +44,21 @@ class ParticipantFixtures extends Fixture
             $participant->setPassword(
                 $this->encoder->encodePassword($participant, $faker->password)
             );
+            switch (rand(0,3)) {
+                case 0:
+                    $participant->setCampus($this->getReference(CityFixtures::CAMPUS_NANTES_REFERENCE));
+                    break;
+                case 1:
+                    $participant->setCampus($this->getReference(CityFixtures::CITY_QUIMPER_REFERENCE));
+                    break;
+                case 2:
+                    $participant->setCampus($this->getReference(CityFixtures::CAMPUS_RENNES_REFERENCE));
+                    break;
+                case 3:
+                    $participant->setCampus($this->getReference(CityFixtures::CAMPUS_NIORT_REFERENCE));
+                    break;
+
+            }
             $manager->persist($participant);
         }
         $manager->flush();
