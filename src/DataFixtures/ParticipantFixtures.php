@@ -46,16 +46,16 @@ class ParticipantFixtures extends Fixture
             );
             switch (rand(0,3)) {
                 case 0:
-                    $participant->setCampus($this->getReference(CityFixtures::CAMPUS_NANTES_REFERENCE));
+                    $participant->setCampus($this->getReference(CampusFixtures::CAMPUS_NANTES_REFERENCE));
                     break;
                 case 1:
-                    $participant->setCampus($this->getReference(CityFixtures::CITY_QUIMPER_REFERENCE));
+                    $participant->setCampus($this->getReference(CampusFixtures::CAMPUS_QUIMPER_REFERENCE));
                     break;
                 case 2:
-                    $participant->setCampus($this->getReference(CityFixtures::CAMPUS_RENNES_REFERENCE));
+                    $participant->setCampus($this->getReference(CampusFixtures::CAMPUS_RENNES_REFERENCE));
                     break;
                 case 3:
-                    $participant->setCampus($this->getReference(CityFixtures::CAMPUS_NIORT_REFERENCE));
+                    $participant->setCampus($this->getReference(CampusFixtures::CAMPUS_NIORT_REFERENCE));
                     break;
 
             }
