@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\DataFixtures\StateFixtures;
 use App\Entity\Event;
+use App\Entity\State;
 use App\Form\EventFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,14 +48,15 @@ class EventController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function createEvent(Request $request) {
+    public function createEvent(EntityManagerInterface $em, Request $request) {
 
         $event = $request->query->get('event');
 
         if(!$event) {
             $event = new Event();
         }
-
+        $creating =$em->getRepository(State::class)->findOneBy(['label' => 'creating']);
+        $event->setState($creating);
         $form = $this->createForm(EventFormType::class, $event);
         $form->handleRequest($request);
 
