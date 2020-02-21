@@ -75,4 +75,5 @@ class EventController extends AbstractController
             'form'=>$form->createView(),
         ]);
     }
+
 }

@@ -37,15 +37,42 @@ class CityController extends AbstractController
             $entityManager->persist($city);
             $entityManager->flush();
 
-            return $this->render('city/index.html.twig', [
-                'form' => $form->createView(),
-                'cities'=> $cities
-            ]);
+            return $this->redirect($this->generateUrl('cities'));
         }
 
         return $this->render('city/index.html.twig', [
             'form' => $form->createView(),
             'cities'=> $cities
         ]);
+    }
+
+    /**
+     * @Route("/deletecity", name="deletecity")
+     * @param Request $request
+     * @return Response
+     */
+    public function deleteCity(Request $request)
+    {
+        $id = $request->query->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $city = $em->getRepository(City::class)->findOneById($id);
+        $em->remove($city);
+        $em->flush();
+        return $this->redirect($this->generateUrl('city'));
+    }
+
+    /**
+     * @Route("/modifycity", name="modifycity")
+     * @param Request $request
+     * @return Response
+     */
+    public function modifyCity(Request $request)
+    {
+        $id = $request->query->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $city = $em->getRepository(City::class)->findOneById($id);
+        return $this->redirect($this->generateUrl('cities', [
+            'city' => $city
+        ]));
     }
 }
