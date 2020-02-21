@@ -31,7 +31,7 @@ class City
     private $postcode;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="city")
+     * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="city", cascade={"remove"})
      */
     private $locations;
 

@@ -27,19 +27,13 @@ class CampusController extends AbstractController
 
         $form = $this->createForm(CampusFormType::class, $campus);
         $form->handleRequest($request);
-
         $campuses = $this->getDoctrine()->getRepository(Campus::class)->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($campus);
             $entityManager->flush();
-
-            return $this->render('campus/index.html.twig', [
-                'form' => $form->createView(),
-                'campuses'=> $campuses
-            ]);
+            return $this->redirect($this->generateUrl('campus'));
         }
 
         return $this->render('campus/index.html.twig', [
@@ -47,5 +41,35 @@ class CampusController extends AbstractController
             'form' => $form->createView(),
             'campuses'=>$campuses
         ]);
+    }
+
+    /**
+     * @Route("/deletecampus", name="deletecampus")
+     * @param Request $request
+     * @return Response
+     */
+    public function deleteCampus(Request $request)
+    {
+        $id = $request->query->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $campus = $em->getRepository(Campus::class)->findOneById($id);
+        $em->remove($campus);
+        $em->flush();
+        return $this->redirect($this->generateUrl('campus'));
+    }
+
+    /**
+     * @Route("/modifycampus", name="modifycampus")
+     * @param Request $request
+     * @return Response
+     */
+    public function modifyCampus(Request $request)
+    {
+        $id = $request->query->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $campus = $em->getRepository(Campus::class)->findOneById($id);
+        return $this->redirect($this->generateUrl('campus', [
+            'campus' => $campus
+        ]));
     }
 }

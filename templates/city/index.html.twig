@@ -38,8 +38,8 @@
                                         <td>{{ city.name }}</td>
                                         <td>{{ city.postcode }}</td>
                                         <td>
-                                            <button class="btn btn-warning">Modify</button>
-                                            <button class="btn btn-danger">Delete</button>
+                                            <a class="btn btn-warning" href="{{ path('modifycity', {'id': city.id}) }}">Modify</a>
+                                            <a class="btn btn-danger" href="{{ path('deletecity', {'id': city.id}) }}">Delete</a>
                                         </td>
                                     </tr>
                                 {% endfor %}

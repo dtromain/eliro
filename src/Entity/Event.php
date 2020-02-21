@@ -52,6 +52,7 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="events")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $location;
 

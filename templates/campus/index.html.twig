@@ -35,8 +35,8 @@
                                 <tr>
                                     <td>{{ campus.name }}</td>
                                     <td>
-                                        <button class="btn btn-warning">Modify</button>
-                                        <button class="btn btn-danger">Delete</button>
+                                        <a class="btn btn-warning" href="{{ path('modifycampus', {'id': campus.id}) }}">Modify</a>
+                                        <a class="btn btn-danger" href="{{ path('deletecampus', {'id': campus.id}) }}">Delete</a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -55,6 +55,6 @@
 
 {% block scripts %}
     <script>
-        $save_btn =
+
     </script>
 {% endblock %}
