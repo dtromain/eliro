@@ -23,7 +23,7 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
             $event->setStarttime($randomDate);
 
             $event->setName('Soirée n°'.$i.' du '.$randomDate->format('Y-m-d H:i:s'));
-            $lastinscriptiondate = $randomDate;
+            $lastinscriptiondate = clone $randomDate;
             $lastinscriptiondate->modify('-1 day');
             $event->setDuration(mt_rand(1, 30)*10);
 
