@@ -50,9 +50,9 @@
                         <div class="bs-dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
                             <ul class="pagination">
                                 <li class="paginate_button page-item previous disabled"><a href="#" class="page-link">&laquo;</a></li>
-                                <li class="paginate_button page-item active"><a href="?page=1"class="page-link">1</a></li>
-                                <li class="paginate_button page-item "><a href="?page=2"class="page-link">2</a></li>
-                                <li class="paginate_button page-item "><a href="?page=3"class="page-link">3</a></li>
+                                {% for i in 1..numberOfPage  %}
+                                    <li class="paginate_button page-item"><a href="?page={{ i }}"class="page-link">{{ i }}</a></li>
+                                {% endfor %}
                                 <li class="paginate_button page-item next"><a href="#"class="page-link">&raquo;</a></li>
                             </ul>
                         </div>

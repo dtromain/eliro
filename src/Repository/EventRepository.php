@@ -20,7 +20,7 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
-    public function findAllByPage($page, $itemPerPage)
+    public function findNotHappendByPage($page, $itemPerPage)
     {
         /** @var QueryBuilder $qb */
         $qb =  $this->createQueryBuilder('e');
@@ -30,6 +30,18 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('now', new \DateTime())
             ->setMaxResults($itemPerPage)
             ->setFirstResult(($page - 1) * $itemPerPage)
+            ->orderBy('e.starttime')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findNotHappend()
+    {
+        /** @var QueryBuilder $qb */
+        $qb =  $this->createQueryBuilder('e');
+
+        return $qb
+            ->where('e.starttime > :now')
+            ->setParameter('now', new \DateTime())
             ->orderBy('e.starttime')
             ->getQuery()
             ->getResult();

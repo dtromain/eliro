@@ -29,10 +29,15 @@ class EventController extends AbstractController
             $itemPerPage = 10;
         }
 
-        $list = $em->getRepository(Event::class)->findAllByPage($page, $itemPerPage);
-
+        $list = $em->getRepository(Event::class)->findNotHappendByPage($page, $itemPerPage);
+        $listAll =$em->getRepository(Event::class)->findNotHappend();
+        $numberOfPage = count($listAll)/$itemPerPage;
+        if ((int)$numberOfPage!=$numberOfPage){
+            $numberOfPage++;
+        }
         return $this->render('event/index.html.twig', [
-            'list' => $list
+            'list' => $list,
+            'numberOfPage' => (int)$numberOfPage
         ]);
     }
 
