@@ -3,18 +3,83 @@
 {% block title %}Hello EventController!{% endblock %}
 
 {% block content %}
-
-
-<div class="container-fluid">
-
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800 text-center">Event List</h1>
 
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- DataTales Example -->
         <div class="card shadow mb-4">
+            <div class="card-body">
+                <form name="filter_form" role="form" method="post">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group" id="campus">
+                                <label class="required" for="filter_form_campus">Select campus</label>
+                                <select class="form-control" id="campus_selector">
+                                    <option value="rennes">Rennes</option>
+                                    <option value="nantes">Nantes</option>
+                                    <option value="quimper">Quimper</option>
+                                    <option value="niort">Niort</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="search">
+                                <label> Search:
+                                    <input type="search" class="form-control form-control-sm" placeholder aria-controls="dataTable"></input>
+                                </label>
+                            </div>
+                        </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <div>
+                                        <input type="checkbox" id="orga" name="orga">
+                                        <label for="scales">Sorties dont je suis l'organisateur.trice</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="enrolled" name="enrolled">
+                                        <label for="horns">Sorties auxquelles je suis inscrit.e</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="nonenrolled" name="nonenrolled">
+                                        <label for="horns">Sorties auxquelles je ne suis pas inscrit.e</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="happend" name="happend">
+                                        <label for="horns">Sorties passées</label>
+                                    </div>
+                                </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6" id="datebegining">
+                            <label> between
+                                <input id="datepickerFirst" width="col-12" />
+                            </label>
+                            <script>
+                                $('#datepickerFirst').datepicker({
+                                    uiLibrary: 'bootstrap4'
+                                });
+                            </script>
+                        </div>
+                        <div class="form-group col-12 col-md-6" id="dateending">
+                            <label> and
+                                <input id="datepickerSecond" width="col-12" />
+                            </label>
+                            <script>
+                                $('#datepickerSecond').datepicker({
+                                    uiLibrary: 'bootstrap4'
+                                });
+                            </script>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary btn">Filtrer</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow md-4">
 
             <div class="card-body">
                 <div class="table-responsive">
@@ -32,9 +97,9 @@
                         {% for event in list %}
                             <tr>
                                 <td> {{ event.name }} </td>
-                                <td> {{ event.starttime | date('d/m')}} </td>
+                                <td> {{ event.starttime | date('d/m h:i')}} </td>
                                 <td> {{ ((event.duration*60)-3600) | date('H')}} h {{ ((event.duration*60)-3600) | date('i')}}</td>
-                                <td> {{ event.lastInscriptionTime | date('d/m') }} </td>
+                                <td> {{ event.lastInscriptionTime | date('d/m H:i') }} </td>
                                 <td> {{ event.state.label }} </td>
                                 <td> {{ event.location }} </td>
                                 <td> {{ event.participants.count() }} </td>
@@ -43,9 +108,9 @@
                                 <td>
                                     {% if  event.lastInscriptionTime | date("m/d/Y") > "now" | date("m/d/Y")%}
                                         {% if  event.participants.contains(app.user)%}
-                                            <a href="#">S'inscrire</a>
-                                        {% else %}
                                             <a href="#">Se désister</a>
+                                        {% else %}
+                                            <a href="#">S'inscrire</a>
                                         {% endif %}
                                     {% else %}
                                         inscription close
@@ -77,4 +142,7 @@
 
     </div>
     <!-- /.container-fluid -->
-    {% endblock %}
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}
