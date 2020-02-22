@@ -4,9 +4,11 @@ namespace App\DataFixtures;
 
 use App\Entity\Event;
 use App\Entity\State;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Exception;
 
 class EventFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -17,8 +19,8 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
             $event = new Event();
 
             try {
-                $randomDate = new \DateTime(sprintf('-%d days', rand(-30, 30)));
-            } catch (\Exception $e) {
+                $randomDate = new DateTime(sprintf('-%d days', rand(-30, 30)));
+            } catch (Exception $e) {
             }
             $event->setStarttime($randomDate);
 
@@ -81,6 +83,16 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                     break;
                 case 5:
                     $event->setLocation($this->getReference(LocationFixtures::LOCATION_6_REFERENCE));
+                    break;
+
+            }
+
+            switch (rand(0,1)) {
+                case 0:
+                    $event->setPlanner($this->getReference(ParticipantFixtures::PARTICIPANT_JULIE_REFERENCE));
+                    break;
+                case 1:
+                    $event->setPlanner($this->getReference(ParticipantFixtures::PARTICIPANT_MARTIN_REFERENCE));
                     break;
 
             }

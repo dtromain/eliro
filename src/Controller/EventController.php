@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\DataFixtures\StateFixtures;
 use App\Entity\Event;
+use App\Entity\Participant;
 use App\Entity\State;
 use App\Form\EventFormType;
+use App\Form\IndexFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class EventController extends AbstractController
 {
     /**
-     * @Route("/", name="event")
+     * @Route("/", name="index")
      * @param EntityManagerInterface $em
      * @param Request $request
      * @return Response
@@ -37,12 +39,18 @@ class EventController extends AbstractController
         $list = $em->getRepository(Event::class)->findNotHappendByPage($page, $itemPerPage);
         $listAll =$em->getRepository(Event::class)->findNotHappend();
         $numberOfPage = count($listAll)/$itemPerPage;
+
         if ((int)$numberOfPage!=$numberOfPage){
             $numberOfPage++;
         }
+
+        $form = $this->createForm(IndexFormType::class);
+        $form->handleRequest($request);
+
         return $this->render('event/index.html.twig', [
             'list' => $list,
-            'numberOfPage' => (int)$numberOfPage
+            'numberOfPage' => (int)$numberOfPage,
+            'form' => $form->createView()
         ]);
     }
 
@@ -59,7 +67,7 @@ class EventController extends AbstractController
         if(!$event) {
             $event = new Event();
         }
-        $creating =$em->getRepository(State::class)->findOneBy(['label' => 'creating']);
+        $creating =$em->getRepository(State::class)->findOneBy(['label' => 'En création']);
         $event->setState($creating);
         $form = $this->createForm(EventFormType::class, $event);
         $form->handleRequest($request);
@@ -94,6 +102,50 @@ class EventController extends AbstractController
         $event = $em->find($id);
 
         return $this->render('event/detailevent.html.twig', ['event'=>$event]);
+    }
+
+    /**
+     * @Route("/subscribe", name="subscribe")
+     * @param Request $request
+     * @return Response
+     */
+    public function subscribe(Request $request) {
+
+        $id = $request->query->get('id');
+        $em = $this->getDoctrine()->getManager();
+
+        $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
+        $user = $this->getUser();
+
+        if($event->getParticipants()->count() <= $event->getPlaces()) {
+            $event->addParticipant($user);
+        }
+
+        $em->persist($event);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('index'));
+    }
+
+    /**
+     * @Route("/unscribe", name="unscribe")
+     * @param Request $request
+     * @return Response
+     */
+    public function unscribe(Request $request) {
+
+        $id = $request->query->get('id');
+        $em = $this->getDoctrine()->getManager();
+
+        $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
+        $user = $this->getUser();
+
+        $event->removeParticipant($user);
+
+        $em->persist($event);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('index'));
     }
 
 }

@@ -16,26 +16,24 @@ class StateFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $creating = new State();
-        $creating->setLabel("creating");
+        $creating->setLabel("En création");
         $this->addReference(self::STATE_CREATING_REFERENCE, $creating);
+        $manager->persist($creating);
 
         $open = new State();
-        $open->setLabel("open");
+        $open->setLabel("Ouvert");
         $this->addReference(self::STATE_OPEN_REFERENCE, $open);
+        $manager->persist($open);
 
         $close = new State();
-        $close->setLabel("close");
+        $close->setLabel("Fermé");
         $this->addReference(self::STATE_CLOSE_REFERENCE, $close);
+        $manager->persist($close);
 
         $ongoing = new State();
-        $ongoing->setLabel("ongoing");
+        $ongoing->setLabel("En cours");
         $this->addReference(self::STATE_ONGOING_REFERENCE, $ongoing);
-
-        $manager->persist($creating);
-        $manager->persist($open);
-        $manager->persist($close);
         $manager->persist($ongoing);
-        $manager->flush();
 
         $manager->flush();
     }

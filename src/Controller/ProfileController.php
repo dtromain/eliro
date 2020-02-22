@@ -34,7 +34,7 @@ class ProfileController extends AbstractController
 
         $old_password = $form->get('old_password')->getData();
         if($old_password && !$encoder->isPasswordValid($participant, $old_password)) {
-            $form->get('old_password')->addError(new FormError('Invalid password'));
+            $form->get('old_password')->addError(new FormError('Le mot de passe est invalide.'));
         }
 
         if ($form->isSubmitted() && $form->isValid()) {

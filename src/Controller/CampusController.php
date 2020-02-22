@@ -32,7 +32,7 @@ class CampusController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($campus);
-            $entityManager->flush();
+            $entityManager->flush() ;
             return $this->redirect($this->generateUrl('campus'));
         }
 

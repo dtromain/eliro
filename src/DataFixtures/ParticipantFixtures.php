@@ -13,6 +13,10 @@ class ParticipantFixtures extends Fixture
 {
     private $encoder;
 
+    public const PARTICIPANT_ROOT_REFERENCE = 'participant-root';
+    public const PARTICIPANT_MARTIN_REFERENCE = 'participant-martin';
+    public const PARTICIPANT_JULIE_REFERENCE = 'participant-julie';
+
     public function __construct(UserPasswordEncoderInterface $encoder) {
         $this->encoder = $encoder;
     }
@@ -24,29 +28,42 @@ class ParticipantFixtures extends Fixture
         $root = new Participant();
         $root->setFirstname("root");
         $root->setLastname("root");
-        $root->setPhone("0606060606");
+        $root->setPhone("0639458712");
         $root->setMail("root@eliro.com");
         $root->setUsername("root");
         $root->setIsAdmin(true);
-
         $root->setPassword(
             $this->encoder->encodePassword($root, 'password')
         );
-
+        $root->setCampus($this->getReference(CampusFixtures::CAMPUS_NANTES_REFERENCE));
+        $this->setReference(self::PARTICIPANT_ROOT_REFERENCE, $root);
         $manager->persist($root);
 
         $martin = new Participant();
         $martin->setFirstname("Martin");
         $martin->setLastname("DUPONT");
-        $martin->setPhone("0707070707");
+        $martin->setPhone("0759179237");
         $martin->setMail("dupont@eliro.com");
         $martin->setUsername("mdupont");
-
         $martin->setPassword(
-            $this->encoder->encodePassword($root, 'password')
+            $this->encoder->encodePassword($martin, 'password')
         );
-
+        $martin->setCampus($this->getReference(CampusFixtures::CAMPUS_RENNES_REFERENCE));
+        $this->setReference(self::PARTICIPANT_MARTIN_REFERENCE, $martin);
         $manager->persist($martin);
+
+        $julie = new Participant();
+        $julie->setFirstname("Julie");
+        $julie->setLastname("DESCHAMPS");
+        $julie->setPhone("0649287436");
+        $julie->setMail("deschamps@eliro.com");
+        $julie->setUsername("jdeschamps");
+        $julie->setPassword(
+            $this->encoder->encodePassword($julie, 'password')
+        );
+        $julie->setCampus($this->getReference(CampusFixtures::CAMPUS_NANTES_REFERENCE));
+        $this->setReference(self::PARTICIPANT_JULIE_REFERENCE, $julie);
+        $manager->persist($julie);
 
         for ($i = 0; $i < 10; $i++) {
             $participant = new Participant();

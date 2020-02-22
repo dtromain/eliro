@@ -1,10 +1,12 @@
 <?php
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -21,11 +23,13 @@ class Event
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotBlank(message="Le nom de l'évênement doit être renseigné.")
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @Assert\GreaterThan("today UTC", message="La date de l'évênement doit être dans le futur.")
      */
     private $starttime;
 
@@ -73,6 +77,8 @@ class Event
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Le nombre de places doit être renseigné.")
+     * @Assert\GreaterThan(0, message="Le nombre de places doit être positif.")
      */
     private $places;
 
@@ -98,12 +104,12 @@ class Event
         return $this;
     }
 
-    public function getStarttime(): ?\DateTimeInterface
+    public function getStarttime(): ?DateTimeInterface
     {
         return $this->starttime;
     }
 
-    public function setStarttime(\DateTimeInterface $starttime): self
+    public function setStarttime(DateTimeInterface $starttime): self
     {
         $this->starttime = $starttime;
 
@@ -122,12 +128,12 @@ class Event
         return $this;
     }
 
-    public function getLastInscriptionTime(): ?\DateTimeInterface
+    public function getLastInscriptionTime(): ?DateTimeInterface
     {
         return $this->lastInscriptionTime;
     }
 
-    public function setLastInscriptionTime(\DateTimeInterface $lastInscriptionTime): self
+    public function setLastInscriptionTime(DateTimeInterface $lastInscriptionTime): self
     {
         $this->lastInscriptionTime = $lastInscriptionTime;
 
@@ -182,9 +188,6 @@ class Event
         return $this;
     }
 
-    /**
-     * @return Collection|Participant[]
-     */
     public function getParticipants(): Collection
     {
         return $this->participants;

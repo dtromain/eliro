@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -27,7 +28,7 @@ class EventRepository extends ServiceEntityRepository
 
         return $qb
             ->where('e.starttime > :now')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->setMaxResults($itemPerPage)
             ->setFirstResult(($page - 1) * $itemPerPage)
             ->orderBy('e.starttime')
@@ -41,7 +42,7 @@ class EventRepository extends ServiceEntityRepository
 
         return $qb
             ->where('e.starttime > :now')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->orderBy('e.starttime')
             ->getQuery()
             ->getResult();

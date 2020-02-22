@@ -24,13 +24,13 @@ class Participant implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Assert\NotBlank(message="Firstname field cannot be empty !")
+     * @Assert\NotBlank(message="Le prénom doit être renseigné.")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Assert\NotBlank(message="Lastname field cannot be empty !")
+     * @Assert\NotBlank(message="Le nom doit être renseigné.")
      */
     private $lastname;
 
@@ -41,7 +41,7 @@ class Participant implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
-     * @Assert\NotBlank(message="Email field cannot be empty !")
+     * @Assert\NotBlank(message="L'adresse mail doit être renseignée.")
      */
     private $mail;
 
@@ -62,18 +62,19 @@ class Participant implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="participants")
+     * @Assert\NotNull(message="Le participant doit être lié à un campus.")
      */
     private $campus;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=false, unique=true)
-     * @Assert\NotBlank(message="Username field cannot be empty !")
+     * @Assert\NotBlank(message="Le nom d'utilisateur doit être renseigné.")
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Assert\NotBlank(message="Password field cannot be empty !")
+     * @Assert\NotBlank(message="Le mot de passe doit être renseigné.")
      */
     private $password;
 
@@ -81,6 +82,11 @@ class Participant implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+    public function __toString()
+    {
+        return $this->username;
+    }
 
     public function __construct() {
         $this->isAdmin = false;
@@ -238,7 +244,7 @@ class Participant implements UserInterface
 
     public function getRoles(): array
     {
-        return array($this->roles);
+        return $this->roles;
     }
 
     public function getSalt()

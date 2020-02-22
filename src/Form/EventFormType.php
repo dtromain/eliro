@@ -20,17 +20,26 @@ class EventFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('starttime', DateTimeType::class)
+            ->add('starttime', DateTimeType::class, [
+                'date_widget' => 'single_text',
+                'time_widget' => 'single_text'
+            ])
             ->add('duration', NumberType::class)
-            ->add('lastInscriptionTime', DateTimeType::class)
+            ->add('lastInscriptionTime', DateTimeType::class, [
+                'date_widget' => 'single_text',
+                'time_widget' => 'single_text'
+            ])
+            ->add('places', NumberType::class, [
+                'required' => false
+            ])
             ->add('information', TextType::class)
             ->add('location', EntityType::class, [
                 'class' => Location::class
             ])
-            ->add('add_location', LocationFormType::class, [
-                'required' => false,
-                'mapped' => false
-            ])
+            //->add('add_location', LocationFormType::class, [
+            //    'required' => false,
+            //    'mapped' => false
+            //])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class
             ])

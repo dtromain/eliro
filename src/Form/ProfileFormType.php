@@ -25,7 +25,7 @@ class ProfileFormType extends AbstractType
             ->add('mail', EmailType::class)
             ->add('username', TextType::class)
             ->add('old_password', PasswordType::class, [
-                'mapped'=>false,
+                'mapped' => false,
                 'required' => false
             ])
             ->add('plain_password', RepeatedType::class, [
