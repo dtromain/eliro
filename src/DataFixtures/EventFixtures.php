@@ -63,6 +63,30 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
 
             }
 
+            switch (rand(0,5)) {
+                case 0:
+                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_1_REFERENCE));
+                    break;
+                case 1:
+                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_2_REFERENCE));
+                    break;
+                case 2:
+                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_3_REFERENCE));
+                    break;
+                case 3:
+                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_4_REFERENCE));
+                    break;
+                case 4:
+                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_5_REFERENCE));
+                    break;
+                case 5:
+                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_6_REFERENCE));
+                    break;
+
+            }
+
+            $event->setPlaces(mt_rand(1, 12)*5);
+
             $manager->persist($event);
         }
 

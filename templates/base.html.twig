@@ -51,19 +51,21 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{ path('cities') }}">
-                                <i class="fas fa-city fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Villes
-                            </a>
-                        </li>
+                        {% if app.user.isAdmin %}
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ path('cities') }}">
+                                    <i class="fas fa-city fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Villes
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{ path('campus') }}">
-                                <i class="fas fa-school fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Campus
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ path('campus') }}">
+                                    <i class="fas fa-school fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Campus
+                                </a>
+                            </li>
+                        {% endif %}
 
                         <li class="nav-item">
                             <a class="nav-link active" href="{{ path('newevent') }}">

@@ -86,6 +86,7 @@ class Participant implements UserInterface
         $this->isAdmin = false;
         $this->isConnected = false;
         $this->events = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
     }
 
     public function getId(): ?int
@@ -149,6 +150,12 @@ class Participant implements UserInterface
     public function setIsAdmin(bool $isAdmin): self
     {
         $this->isAdmin = $isAdmin;
+
+        if($isAdmin) {
+            $this->roles = ['ROLE_ADMIN', 'ROLE_USER'];
+        } else {
+            $this->roles = ['ROLE_USER'];
+        }
 
         return $this;
     }
@@ -231,7 +238,7 @@ class Participant implements UserInterface
 
     public function getRoles(): array
     {
-        return $this->roles;
+        return array($this->roles);
     }
 
     public function getSalt()

@@ -16,6 +16,9 @@ class EventController extends AbstractController
 {
     /**
      * @Route("/", name="event")
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return Response
      */
     public function listEvents(EntityManagerInterface $em, Request $request)
     {
@@ -45,6 +48,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/newevent", name="newevent")
+     * @param EntityManagerInterface $em
      * @param Request $request
      * @return Response
      */
@@ -74,6 +78,22 @@ class EventController extends AbstractController
         return $this->render('event/newevent.html.twig', [
             'form'=>$form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/detailevent", name="detailevent")
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return Response
+     */
+    public function detailEvent(EntityManagerInterface $em, Request $request) {
+
+        $id = $request->query->get('id');
+
+        $em = $this->getDoctrine()->getRepository(Event::class);
+        $event = $em->find($id);
+
+        return $this->render('event/detailevent.html.twig', ['event'=>$event]);
     }
 
 }

@@ -8,7 +8,6 @@ use App\Entity\Location;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,14 +22,14 @@ class EventFormType extends AbstractType
             ->add('name', TextType::class)
             ->add('starttime', DateTimeType::class)
             ->add('duration', NumberType::class)
-            ->add('lastInscriptionTime', DateType::class)
+            ->add('lastInscriptionTime', DateTimeType::class)
             ->add('information', TextType::class)
             ->add('location', EntityType::class, [
                 'class' => Location::class
             ])
-            ->add('addlocation', LocationFormType::class, [
-                'mapped'=>false,
-                'required'=>false
+            ->add('add_location', LocationFormType::class, [
+                'required' => false,
+                'mapped' => false
             ])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class

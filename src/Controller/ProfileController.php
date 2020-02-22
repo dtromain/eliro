@@ -22,15 +22,17 @@ class ProfileController extends AbstractController
     public function index(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $participant = $this->getUser();
+
+        $participant = $request->get('participant');
+
+        if(!$participant) {
+            $participant = $this->getUser();
+        }
 
         $form = $this->createForm(ProfileFormType::class, $participant);
-
         $form->handleRequest($request);
-        dump(__LINE__);
 
         $old_password = $form->get('old_password')->getData();
-
         if($old_password && !$encoder->isPasswordValid($participant, $old_password)) {
             $form->get('old_password')->addError(new FormError('Invalid password'));
         }

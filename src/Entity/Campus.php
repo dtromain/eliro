@@ -26,7 +26,7 @@ class Campus
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="campus")
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="campus", cascade={"remove"})
      */
     private $events;
 

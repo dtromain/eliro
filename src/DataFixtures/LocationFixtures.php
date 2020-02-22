@@ -9,6 +9,14 @@ use Faker\Factory;
 
 class LocationFixtures extends Fixture
 {
+
+    public const LOCATION_1_REFERENCE = 'location-1';
+    public const LOCATION_2_REFERENCE = 'location-2';
+    public const LOCATION_3_REFERENCE = 'location-3';
+    public const LOCATION_4_REFERENCE = 'location-4';
+    public const LOCATION_5_REFERENCE = 'location-5';
+    public const LOCATION_6_REFERENCE = 'location-6';
+
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
@@ -19,6 +27,7 @@ class LocationFixtures extends Fixture
         $location1->setLatitude($faker->latitude);
         $location1->setLongitude($faker->longitude);
         $location1->setCity($this->getReference(CityFixtures::CITY_NANTES_REFERENCE));
+        $this->addReference(self::LOCATION_1_REFERENCE, $location1);
 
         $location2 = new Location();
         $location2->setName($faker->company);
@@ -26,6 +35,7 @@ class LocationFixtures extends Fixture
         $location2->setLatitude($faker->latitude);
         $location2->setLongitude($faker->longitude);
         $location2->setCity($this->getReference(CityFixtures::CITY_NANTES_REFERENCE));
+        $this->addReference(self::LOCATION_2_REFERENCE, $location2);
 
         $location3 = new Location();
         $location3->setName($faker->company);
@@ -33,6 +43,7 @@ class LocationFixtures extends Fixture
         $location3->setLatitude($faker->latitude);
         $location3->setLongitude($faker->longitude);
         $location3->setCity($this->getReference(CityFixtures::CITY_NIORT_REFERENCE));
+        $this->addReference(self::LOCATION_3_REFERENCE, $location3);
 
         $location4 = new Location();
         $location4->setName($faker->company);
@@ -40,6 +51,7 @@ class LocationFixtures extends Fixture
         $location4->setLatitude($faker->latitude);
         $location4->setLongitude($faker->longitude);
         $location4->setCity($this->getReference(CityFixtures::CITY_NIORT_REFERENCE));
+        $this->addReference(self::LOCATION_4_REFERENCE, $location4);
 
         $location5 = new Location();
         $location5->setName($faker->company);
@@ -47,6 +59,7 @@ class LocationFixtures extends Fixture
         $location5->setLatitude($faker->latitude);
         $location5->setLongitude($faker->longitude);
         $location5->setCity($this->getReference(CityFixtures::CITY_RENNES_REFERENCE));
+        $this->addReference(self::LOCATION_5_REFERENCE, $location5);
 
         $location6 = new Location();
         $location6->setName($faker->company);
@@ -54,6 +67,7 @@ class LocationFixtures extends Fixture
         $location6->setLatitude($faker->latitude);
         $location6->setLongitude($faker->longitude);
         $location6->setCity($this->getReference(CityFixtures::CITY_QUIMPER_REFERENCE));
+        $this->addReference(self::LOCATION_6_REFERENCE, $location6);
 
         $manager->persist($location1);
         $manager->persist($location2);

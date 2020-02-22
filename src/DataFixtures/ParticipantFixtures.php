@@ -27,12 +27,26 @@ class ParticipantFixtures extends Fixture
         $root->setPhone("0606060606");
         $root->setMail("root@eliro.com");
         $root->setUsername("root");
+        $root->setIsAdmin(true);
 
         $root->setPassword(
             $this->encoder->encodePassword($root, 'password')
         );
 
         $manager->persist($root);
+
+        $martin = new Participant();
+        $martin->setFirstname("Martin");
+        $martin->setLastname("DUPONT");
+        $martin->setPhone("0707070707");
+        $martin->setMail("dupont@eliro.com");
+        $martin->setUsername("mdupont");
+
+        $martin->setPassword(
+            $this->encoder->encodePassword($root, 'password')
+        );
+
+        $manager->persist($martin);
 
         for ($i = 0; $i < 10; $i++) {
             $participant = new Participant();

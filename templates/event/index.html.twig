@@ -30,7 +30,7 @@
                         </tr>
                         {% for event in list %}
                             <tr>
-                                <td> {{ event.name }} </td>
+                                <td><a href="{{ path('detailevent', {'id': event.id}) }}">{{ event.name }}</a></td>
                                 <td> {{ event.starttime | date('d/m')}} </td>
                                 <td> {{ ((event.duration*60)-3600) | date('H')}} h {{ ((event.duration*60)-3600) | date('i')}}</td>
                                 <td> {{ event.lastInscriptionTime | date('d/m') }} </td>
@@ -53,9 +53,6 @@
 
                             </tr>
                         {% endfor %}
-
-
-
                     </table>
                     <div>
                         <div class="bs-dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
@@ -70,10 +67,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <!-- /.container-fluid -->
-
     </div>
     <!-- /.container-fluid -->
     {% endblock %}

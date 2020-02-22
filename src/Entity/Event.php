@@ -71,6 +71,11 @@ class Event
      */
     private $planner;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $places;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -211,6 +216,18 @@ class Event
     public function setPlanner(?Participant $planner): self
     {
         $this->planner = $planner;
+
+        return $this;
+    }
+
+    public function getPlaces(): ?int
+    {
+        return $this->places;
+    }
+
+    public function setPlaces(int $places): self
+    {
+        $this->places = $places;
 
         return $this;
     }

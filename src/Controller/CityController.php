@@ -58,7 +58,7 @@ class CityController extends AbstractController
         $city = $em->getRepository(City::class)->findOneById($id);
         $em->remove($city);
         $em->flush();
-        return $this->redirect($this->generateUrl('city'));
+        return $this->redirect($this->generateUrl('cities'));
     }
 
     /**

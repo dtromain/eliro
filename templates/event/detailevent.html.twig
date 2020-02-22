@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un évènement{% endblock %}
+
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800 text-center">Create Event</h1>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+
+                <div class="card-body">
+                    <p>{{ event.name }}</p>
+                    <p>{{ event.starttime|date("F jS \\a\\t g:ia") }}</p>
+                    <p>{{ event.campus.name }}</p>
+                    <p>{{ event.location.name }} - {{ event.location.street }} {{ event.location.city.postcode }} {{ event.location.city.name }}</p>
+                    <label for="reason">Motif</label>
+                    <textarea name="reason"></textarea>
+                    <br>
+                    <a class="btn btn-danger">Enregistrer</a>
+                    <a class="btn btn-primary">Annuler</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
