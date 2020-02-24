@@ -57,8 +57,7 @@
                                     {% endif %}
                                 </td>
 
-                                <td> {{ event.planner }} </td>
-                                {# inscription/desistement#}
+                                <td><a href="{{ path('profile', {'username': event.planner.username}) }}">{{ event.planner }}</a></td>
                                 <td>
                                     {% if event.state.label == 'Fermé' %}
                                         <a href="{{ path('detailevent', {'id': event.id}) }}">Afficher</a>
