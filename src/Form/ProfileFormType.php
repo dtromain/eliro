@@ -17,14 +17,24 @@ class ProfileFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('phone', TextType::class, [
-                'required' => false,
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom'
             ])
-            ->add('mail', EmailType::class)
-            ->add('username', TextType::class)
+            ->add('lastname', TextType::class, [
+                'label' => 'Nom'
+            ])
+            ->add('phone', TextType::class, [
+                'label' => 'Téléphone',
+                'required' => false
+            ])
+            ->add('mail', EmailType::class, [
+                'label' => 'Adresse mail'
+            ])
+            ->add('username', TextType::class, [
+                'label' => 'Pseudo'
+            ])
             ->add('old_password', PasswordType::class, [
+                'label' => 'Mot de passe actuel',
                 'mapped' => false,
                 'required' => false
             ])
@@ -32,8 +42,8 @@ class ProfileFormType extends AbstractType
                 'type' => PasswordType::class,
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => false,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => ['label' => 'Nouveau mot de passe'],
+                'second_options' => ['label' => 'Confirmation'],
                 'mapped'=>false,
                 'invalid_message' => 'Les champs mot de passe et confirmation ne correspondent pas'
             ])

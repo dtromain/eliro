@@ -17,15 +17,25 @@ class LocationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name',  TextType::class)
-            ->add('street', TextType::class)
-            ->add('latitude', NumberType::class)
-            ->add('longitude', NumberType::class)
+            ->add('name',  TextType::class, [
+                'label' => 'Nom'
+            ])
+            ->add('street', TextType::class, [
+                'label' => 'Rue'
+            ])
+            ->add('latitude', NumberType::class, [
+                'label' => 'Latitude'
+            ])
+            ->add('longitude', NumberType::class, [
+                'label' => 'Longitude'
+            ])
             ->add('city', EntityType::class, [
+                'label' => 'Ville',
                 'class' => City::class
             ])
-            ->add('save', SubmitType::class, ['label' => 'Add'])
-        ;
+            ->add('save', SubmitType::class, [
+                'label' => 'Ajouter'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

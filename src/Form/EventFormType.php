@@ -19,21 +19,31 @@ class EventFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'label' => 'Nom'
+            ])
             ->add('starttime', DateTimeType::class, [
+                'label' => 'Date de début',
                 'date_widget' => 'single_text',
                 'time_widget' => 'single_text'
             ])
-            ->add('duration', NumberType::class)
+            ->add('duration', NumberType::class, [
+                'label' => 'Durée'
+            ])
             ->add('lastInscriptionTime', DateTimeType::class, [
+                'label' => 'Date de clôture',
                 'date_widget' => 'single_text',
                 'time_widget' => 'single_text'
             ])
             ->add('places', NumberType::class, [
+                'label' => 'Nombre de places',
                 'required' => false
             ])
-            ->add('information', TextType::class)
+            ->add('information', TextType::class, [
+                'label' => 'Informations'
+            ])
             ->add('location', EntityType::class, [
+                'label' => 'Lieu',
                 'class' => Location::class
             ])
             //->add('add_location', LocationFormType::class, [
@@ -41,10 +51,12 @@ class EventFormType extends AbstractType
             //    'mapped' => false
             //])
             ->add('campus', EntityType::class, [
+                'label' => 'Site',
                 'class' => Campus::class
             ])
-            ->add('save', SubmitType::class, ['label' => 'Save'])
-        ;
+            ->add('save', SubmitType::class, [
+                'label' => 'Enregistrement'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
