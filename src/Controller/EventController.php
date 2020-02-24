@@ -117,8 +117,10 @@ class EventController extends AbstractController
         $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
         $user = $this->getUser();
 
-        if($event->getParticipants()->count() <= $event->getPlaces()) {
-            $event->addParticipant($user);
+        if($event->getStatus()->getLabel('Ouvert')) {
+            if ($event->getParticipants()->count() <= $event->getPlaces()) {
+                $event->addParticipant($user);
+            }
         }
 
         $em->persist($event);
@@ -140,7 +142,9 @@ class EventController extends AbstractController
         $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
         $user = $this->getUser();
 
-        $event->removeParticipant($user);
+        if($event->getStatus()->getLabel('Ouvert')) {
+            $event->removeParticipant($user);
+        }
 
         $em->persist($event);
         $em->flush();
