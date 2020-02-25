@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DataFixtures\StateFixtures;
+use App\Entity\Campus;
 use App\Entity\Event;
 use App\Entity\Participant;
 use App\Entity\State;
@@ -17,6 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use DateTime;
+use function Webmozart\Assert\Assert;
 
 class EventController extends AbstractController
 {
@@ -28,23 +31,88 @@ class EventController extends AbstractController
      */
     public function listEvents(EntityManagerInterface $em, Request $request)
     {
-        if($request->query->get('page')) {
+        if ($request->query->get('page')) {
             $page = $request->query->get('page');
         } else {
             $page = 1;
         }
 
-        if($request->query->get('itemPerPage')) {
+        if ($request->query->get('index_form')) {
+            $index_form = $request->query->get('index_form');
+        } else {
+            $index_form = "";
+        }
+
+        if ($request->query->get('itemPerPage')) {
             $itemPerPage = $request->query->get('itemPerPage');
         } else {
             $itemPerPage = 10;
         }
 
-        $list = $em->getRepository(Event::class)->findNotHappendByPage($page, $itemPerPage);
-        $listAll =$em->getRepository(Event::class)->findNotHappend();
-        $numberOfPage = count($listAll)/$itemPerPage;
+        if ($index_form != "") {
+            $listFilter = array(
+                'campus' => $em->getRepository(Campus::class)->find($index_form['campus']),
+                'search' => $index_form['search'],
+                'user' => $listFilter['user'] = $this->getUser()->getId(),
+            );
+            if ($index_form['first_date'] != "") {
+                $listFilter['first_date'] = $index_form['first_date'];
+            } else {
+                $listFilter['first_date'] = new DateTime();
+            }
 
-        if ((int)$numberOfPage!=$numberOfPage){
+            if ($index_form['first_date'] != "") {
+                $listFilter['second_date'] = $index_form['second_date'];
+            } else {
+                $listFilter['second_date'] = "";
+            }
+
+            if (array_key_exists("isPlanner", $index_form) && ($index_form['isPlanner'])) {
+                $listFilter['isPlanner'] = true;
+            } else {
+                $listFilter['isPlanner'] = false;
+            }
+
+            if (array_key_exists("isParticipating", $index_form) && ($index_form['isParticipating'])) {
+                $listFilter['isParticipating'] = true;
+            } else {
+                $listFilter['isParticipating'] = false;
+            }
+
+            if (array_key_exists("isNotParticipating", $index_form) && ($index_form['isNotParticipating'])) {
+                $listFilter['isNotParticipating'] = true;
+            } else {
+                $listFilter['isNotParticipating'] = false;
+            }
+
+            if (array_key_exists("isPassed", $index_form) && ($index_form['isPassed'])) {
+                $listFilter['isPassed'] = true;
+            } else {
+                $listFilter['isPassed'] = false;
+            }
+        } else {
+            $listFilter = array(
+                'campus' => $em->getRepository(Campus::class)->find($this->getUser()->getCampus()),
+                'search' => "",
+            );
+            $listFilter['first_date'] = new DateTime();
+            $listFilter['second_date'] = "";
+            $listFilter['isPlanner'] = true;
+            $listFilter['isParticipating'] = true;
+            $listFilter['isNotParticipating'] = true;
+            $listFilter['isPassed'] = false;
+            $listFilter['user'] = $this->getUser()->getId();
+
+        }
+
+
+        $list = $em->getRepository(Event::class)->findByPageFilter($page, $itemPerPage, $listFilter);
+        $listAll = $em->getRepository(Event::class)->findFilter($listFilter);
+
+
+        $numberOfPage = count($listAll) / $itemPerPage;
+
+        if ((int)$numberOfPage != $numberOfPage) {
             $numberOfPage++;
         }
 
@@ -66,11 +134,11 @@ class EventController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function createEvent(StateRepository $sr, ParticipantRepository $pr, EntityManagerInterface $em, Request $request) {
+    public function createEvent(EntityManagerInterface $em, Request $request) {
 
         $event = $request->query->get('event');
 
-        if(!$event) {
+        if (!$event) {
             $event = new Event();
         }
 
@@ -93,7 +161,7 @@ class EventController extends AbstractController
         }
 
         return $this->render('event/newevent.html.twig', [
-            'form'=>$form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 

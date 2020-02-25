@@ -65,7 +65,7 @@ class ParticipantFixtures extends Fixture
         $this->setReference(self::PARTICIPANT_JULIE_REFERENCE, $julie);
         $manager->persist($julie);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $participant = new Participant();
             $participant->setFirstname($faker->firstName);
             $participant->setLastname($faker->lastName);
@@ -75,17 +75,18 @@ class ParticipantFixtures extends Fixture
             $participant->setPassword(
                 $this->encoder->encodePassword($participant, $faker->password)
             );
-            switch (rand(0,3)) {
-                case 0:
+            $rand = rand(1,100);
+            switch ($rand) {
+                case ($rand <= 40):
                     $participant->setCampus($this->getReference(CampusFixtures::CAMPUS_NANTES_REFERENCE));
                     break;
-                case 1:
+                case ($rand <=50):
                     $participant->setCampus($this->getReference(CampusFixtures::CAMPUS_QUIMPER_REFERENCE));
                     break;
-                case 2:
+                case ($rand <= 80):
                     $participant->setCampus($this->getReference(CampusFixtures::CAMPUS_RENNES_REFERENCE));
                     break;
-                case 3:
+                case ($rand <= 100):
                     $participant->setCampus($this->getReference(CampusFixtures::CAMPUS_NIORT_REFERENCE));
                     break;
 

@@ -12,15 +12,29 @@
 
         <div class="card shadow mb-4">
             <div class="card-body">
-                {{ form_start(form) }}
-                {{ form_row(form.campus) }}
-                {{ form_row(form.search) }}
-                {{ form_row(form.first_date) }}
-                {{ form_row(form.second_date) }}
-                {{ form_row(form.isPlanner) }}
-                {{ form_row(form.isParticipating) }}
-                {{ form_row(form.isNotParticipating) }}
-                {{ form_row(form.isPassed) }}
+                {# render the start tag and change the submission method #}
+                {{ form_start(form, {'method': 'GET'}) }}
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        {{ form_row(form.campus) }}
+                        {{ form_row(form.search) }}
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                {{ form_row(form.first_date) }}
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                {{ form_row(form.second_date) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-4 col-sm-12">
+                        {{ form_row(form.isPlanner) }}
+                        {{ form_row(form.isParticipating) }}
+                        {{ form_row(form.isNotParticipating) }}
+                        {{ form_row(form.isPassed) }}
+                    </div>
+                </div>
+                {{ form_row(form.filter, { 'label': 'Filtrer' }) }}
                 {{ form_end(form) }}
             </div>
         </div>
@@ -38,6 +52,7 @@
                             <th>Clôture</th>
                             <th>Inscrits / Places</th>
                             <th>Etat</th>
+                            <th>campus</th>
                             <th>Inscrit</th>
                             <th>Organisateur</th>
                             <th>Actions</th>
