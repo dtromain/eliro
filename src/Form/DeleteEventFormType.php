@@ -2,30 +2,30 @@
 
 namespace App\Form;
 
-use App\Entity\Campus;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CampusFormType extends AbstractType
+class DeleteEventFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'Nom'
+            ->add('reason', TextType::class, [
+                'label' => 'Raison'
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer']
-            );
+                'label' => 'Annuler l\'évênement',
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Campus::class,
+            // Configure your form options here
         ]);
     }
 }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Events{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block content %}
 
@@ -44,11 +44,11 @@
                         </tr>
                         {% for event in list %}
                             <tr>
-                                <td><a href="{{ path('detailevent', {'id': event.id}) }}">{{ event.name }}</a></td>
-                                <td> {{ event.starttime | date('d/m/Y H:i')}} </td>
-                                <td> {{ event.lastInscriptionTime | date('d/m/Y H:i') }} </td>
-                                <td> {{ event.participants.count() }} / {{ event.places }}</td>
-                                <td> {{ event.state.label }} </td>
+                                <td>{{ event.name }}</td>
+                                <td>{{ event.starttime | date('d/m/Y H:i')}} </td>
+                                <td>{{ event.lastInscriptionTime | date('d/m/Y H:i') }} </td>
+                                <td>{{ event.participants.count() }} / {{ event.places }}</td>
+                                <td>{{ event.state.label }} </td>
                                 <td>
                                     {% if  event.participants.contains(app.user)%}
                                         Oui
@@ -56,33 +56,31 @@
                                         Non
                                     {% endif %}
                                 </td>
-
-                                <td><a href="{{ path('profile', {'username': event.planner.username}) }}">{{ event.planner }}</a></td>
+                                <td>
+                                    {% if  event.planner != app.user %}
+                                        <a href="{{ path('profile', {'username': event.planner.username}) }}">{{ event.planner }}</a>
+                                    {% else %}
+                                        {{ event.planner }}
+                                    {% endif %}
+                                </td>
                                 <td>
                                     {% if event.state.label == 'Fermé' %}
-                                        <a href="{{ path('detailevent', {'id': event.id}) }}">Afficher</a>
-
+                                        <a href="{{ path('event', {'id': event.id}) }}">Afficher</a>
                                     {% elseif event.state.label == 'En cours' %}
-                                        <a href="{{ path('detailevent', {'id': event.id}) }}">Afficher</a>
-
+                                        <a href="{{ path('event', {'id': event.id}) }}">Afficher</a>
                                     {% elseif (event.state.label == 'En création') and (event.planner == app.user) %}
-                                        <a href="{{ path('detailevent', {'id': event.id}) }}">Modifier</a>
+                                        <a href="{{ path('event', {'id': event.id}) }}">Modifier</a>
                                         - <a href="#">Publier</a>
-
                                     {% elseif event.state.label == 'Ouvert' %}
-                                        <a href="{{ path('detailevent', {'id': event.id}) }}">Afficher</a> -
-
+                                        <a href="{{ path('event', {'id': event.id}) }}">Afficher</a> -
                                         {% if event.planner != app.user  %}
                                             {% if event.participants.contains(app.user) %}
                                                 <a class="text-warning" href="{{ path('unscribe', {'id': event.id}) }}">Se désister</a>
-
                                             {% else %}
                                                 <a class="text-success" href="{{ path('subscribe', {'id': event.id}) }}">S'inscrire</a>
-
                                             {% endif %}
                                         {% else %}
-                                            <a class="text-danger" href="">Annuler</a>
-
+                                            <a class="text-danger" href="{{ path('event', {'id': event.id}) }}">Annuler</a>
                                         {% endif %}
                                     {% endif %}
                                 </td>
@@ -106,6 +104,7 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /.container-fluid -->
+
 {% endblock %}
 {% block scripts %}
 

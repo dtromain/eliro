@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Event;
-use App\Entity\State;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -38,15 +37,14 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                     $event->setState($this->getReference(StateFixtures::STATE_CREATING_REFERENCE));
                     break;
                 case 1:
-                    $event->setState($this->getReference(StateFixtures::STATE_OPEN_REFERENCE));
+                    $event->setState($this->getReference(StateFixtures::STATE_ONGOING_REFERENCE));
                     break;
                 case 2:
                     $event->setState($this->getReference(StateFixtures::STATE_CLOSE_REFERENCE));
                     break;
                 case 3:
-                    $event->setState($this->getReference(StateFixtures::STATE_ONGOING_REFERENCE));
+                    $event->setState($this->getReference(StateFixtures::STATE_OPEN_REFERENCE));
                     break;
-
             }
 
             switch (rand(0,3)) {
@@ -62,7 +60,6 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                 case 3:
                     $event->setCampus($this->getReference(CampusFixtures::CAMPUS_NIORT_REFERENCE));
                     break;
-
             }
 
             switch (rand(0,5)) {
@@ -84,7 +81,6 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                 case 5:
                     $event->setLocation($this->getReference(LocationFixtures::LOCATION_6_REFERENCE));
                     break;
-
             }
 
             switch (rand(0,1)) {
@@ -94,7 +90,6 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                 case 1:
                     $event->setPlanner($this->getReference(ParticipantFixtures::PARTICIPANT_MARTIN_REFERENCE));
                     break;
-
             }
 
             $event->setPlaces(mt_rand(1, 12)*5);

@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un évènement{% endblock %}
+{% block title %}Evênements{% endblock %}
 
 {% block content %}
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-4 text-gray-800 text-center mt-4">Créer une sortie</h1>
+        <h1 class="h3 mb-4 text-gray-800 text-center mt-4">Détails de l'évênement</h1>
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -16,15 +16,16 @@
             <div class="card shadow mb-4">
 
                 <div class="card-body">
-                    <p>{{ event.name }}</p>
-                    <p>{{ event.starttime|date("F jS \\a\\t g:ia") }}</p>
-                    <p>{{ event.campus.name }}</p>
-                    <p>{{ event.location.name }} - {{ event.location.street }} {{ event.location.city.postcode }} {{ event.location.city.name }}</p>
-                    <label for="reason">Motif</label>
-                    <textarea name="reason"></textarea>
+                    <p>Nom de la sortie: {{ event.name }}</p>
+                    <p>Date de la sortie: {{ event.starttime|date("d/m/Y H:i") }}</p>
+                    <p>Ville organisatrice: {{ event.campus.name }}</p>
+                    <p>Lieu: {{ event.location.name }} - {{ event.location.street }} {{ event.location.city.postcode }} {{ event.location.city.name }}</p>
                     <br>
-                    <a class="btn btn-danger">Enregistrer</a>
-                    <a class="btn btn-primary">Annuler</a>
+                    {{ form_start(form) }}
+                    {{ form_row(form.reason) }}
+                    {{ form_row(form.save) }}
+                    {{ form_end(form) }}
+                    <a class="btn btn-primary" href="{{ path('index') }}">Retour</a>
                 </div>
             </div>
         </div>

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Form\CityFormType;
-use App\Repository\CityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
