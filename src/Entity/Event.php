@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Event
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -49,10 +50,15 @@ class Event
     private $information;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\State", inversedBy="events")
+     * @ORM\ManyToOne(targetEntity="App\Entity\State")
      *
      */
     private $state;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reason;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="events")
@@ -157,7 +163,7 @@ class Event
         return $this->state;
     }
 
-    public function setState(?State $state): self
+    public function setState($state)
     {
         $this->state = $state;
 
@@ -231,6 +237,18 @@ class Event
     public function setPlaces(int $places): self
     {
         $this->places = $places;
+
+        return $this;
+    }
+
+    public function getReason(): ?string
+    {
+        return $this->reason;
+    }
+
+    public function setReason(string $reason): self
+    {
+        $this->reason = $reason;
 
         return $this;
     }

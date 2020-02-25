@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use App\Form\ProfileFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -23,35 +24,49 @@ class ProfileController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $participant = $request->get('participant');
+        $username = $request->get('username');
 
-        if(!$participant) {
+        $participant = $this->getDoctrine()->getRepository(Participant::class)->findOneBy(['username'=>$username]);
+
+        if($participant == null){
             $participant = $this->getUser();
         }
 
-        $form = $this->createForm(ProfileFormType::class, $participant);
-        $form->handleRequest($request);
+        if($participant == $this->getUser()) {
 
-        $old_password = $form->get('old_password')->getData();
-        if($old_password && !$encoder->isPasswordValid($participant, $old_password)) {
-            $form->get('old_password')->addError(new FormError('Le mot de passe est invalide.'));
-        }
+            $form = $this->createForm(ProfileFormType::class, $participant);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $plain_password = $form->get('plain_password')->getData();
-
-            if($plain_password && $old_password) {
-                $encoded_password = $encoder->encodePassword($participant, $plain_password);
-                $participant->setPassword($encoded_password);
+            $old_password = $form->get('old_password')->getData();
+            if($old_password && !$encoder->isPasswordValid($participant, $old_password)) {
+                $form->get('old_password')->addError(new FormError('Le mot de passe est invalide.'));
             }
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($participant);
-            $entityManager->flush();
-            return $this->redirectToRoute('profile');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $plain_password = $form->get('plain_password')->getData();
 
+                if($plain_password && $old_password) {
+                    $encoded_password = $encoder->encodePassword($participant, $plain_password);
+                    $participant->setPassword($encoded_password);
+                }
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($participant);
+                $entityManager->flush();
+                return $this->redirectToRoute('profile');
+            }
+
+            return $this->render('profile/index.html.twig', [
+                'form' => $form->createView()
+            ]);
+
+        } else {
+
+            return $this->render('profile/profile.html.twig', [
+                'participant' => $participant
+            ]);
         }
 
-        return $this->render('profile/index.html.twig', ['form' => $form->createView(),]);
+
     }
 }

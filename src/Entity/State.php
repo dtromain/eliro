@@ -2,10 +2,9 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use InvalidArgumentException;
 
 /**
  * @ApiResource
@@ -13,6 +12,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
  */
 class State
 {
+    public const STATE_CREATING = 'En création';
+    public const STATE_OPEN = 'Ouvert';
+    public const STATE_PENDING = 'En cours';
+    public const STATE_CLOSE = 'Fermé';
+    public const STATE_CANCELLED = 'Annulé';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -24,16 +29,6 @@ class State
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $label;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="state")
-     */
-    private $events;
-
-    public function __construct()
-    {
-        $this->events = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -47,38 +42,11 @@ class State
 
     public function setLabel(string $label): self
     {
+        if (!in_array($label, array(self::STATE_CREATING, self::STATE_OPEN, self::STATE_PENDING, self::STATE_CLOSE, self::STATE_CANCELLED))) {
+            throw new InvalidArgumentException("Invalid state");
+        }
+
         $this->label = $label;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Event[]
-     */
-    public function getEvents(): Collection
-    {
-        return $this->events;
-    }
-
-    public function addEvent(Event $event): self
-    {
-        if (!$this->events->contains($event)) {
-            $this->events[] = $event;
-            $event->setState($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvent(Event $event): self
-    {
-        if ($this->events->contains($event)) {
-            $this->events->removeElement($event);
-            // set the owning side to null (unless already changed)
-            if ($event->getState() === $this) {
-                $event->setState(null);
-            }
-        }
 
         return $this;
     }
