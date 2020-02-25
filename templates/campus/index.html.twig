@@ -35,8 +35,8 @@
                                 <tr>
                                     <td>{{ campus.name }}</td>
                                     <td>
-                                        <a class="btn btn-warning" href="{{ path('modifycampus', {'id': campus.id}) }}">Modify</a>
-                                        <a class="btn btn-danger" href="{{ path('deletecampus', {'id': campus.id}) }}">Delete</a>
+                                        <a class="btn btn-warning" href="{{ path('campus_list', {'id': campus.id}) }}">Modify</a>
+                                        <a class="btn btn-danger" href="{{ path('campus_delete', {'id': campus.id}) }}">Delete</a>
                                     </td>
                                 </tr>
                             {% endfor %}

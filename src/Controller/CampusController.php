@@ -15,18 +15,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class CampusController extends AbstractController
 {
     /**
-     * @Route("/campus", name="campus")
+     * @Route("/campus", name="campus_list")
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param CampusRepository $cr
      * @return RedirectResponse|Response
      */
-    public function index(Request $request, EntityManagerInterface $em, CampusRepository $cr)
+    public function campusList(Request $request, EntityManagerInterface $em, CampusRepository $cr)
     {
-        $campus_name = $request->query->get('campus');
-        $campus = $cr->findOneBy(['name'=>$campus_name]);
+        $id = $request->query->get('id');
 
-        if(!$campus) {
+        if($id != null) {
+            $campus = $cr->find($id);
+        } else {
             $campus = new Campus();
         }
 
@@ -37,7 +38,7 @@ class CampusController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($campus);
             $em->flush() ;
-            return $this->redirect($this->generateUrl('campus'));
+            return $this->redirect($this->generateUrl('campus_list'));
         }
 
         return $this->render('campus/index.html.twig', [
@@ -48,36 +49,18 @@ class CampusController extends AbstractController
     }
 
     /**
-     * @Route("/deletecampus", name="deletecampus")
+     * @Route("/deletecampus", name="campus_delete")
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param CampusRepository $cr
      * @return Response
      */
-    public function deleteCampus(Request $request, EntityManagerInterface $em, CampusRepository $cr)
+    public function campusDelete(Request $request, EntityManagerInterface $em, CampusRepository $cr)
     {
         $id = $request->query->get('id');
         $campus = $cr->findOneById($id);
         $em->remove($campus);
         $em->flush();
-        return $this->redirect($this->generateUrl('campus'));
-    }
-
-    /**
-     * @Route("/modifycampus", name="modifycampus")
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @param CampusRepository $cr
-     * @return Response
-     */
-    public function modifyCampus(Request $request, EntityManagerInterface $em, CampusRepository $cr)
-    {
-        $id = $request->query->get('id');
-        $campus = $cr->findOneById($id);
-        $em->persist($campus);
-        $em->flush();
-        return $this->redirect($this->generateUrl('campus', [
-            'campus' => $campus
-        ]));
+        return $this->redirect($this->generateUrl('campus_list'));
     }
 }
