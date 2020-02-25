@@ -68,6 +68,7 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="events")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $campus;
 
@@ -78,6 +79,7 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Participant")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $planner;
 

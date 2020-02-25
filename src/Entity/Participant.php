@@ -62,6 +62,7 @@ class Participant implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="participants")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Assert\NotNull(message="Le participant doit être lié à un campus.")
      */
     private $campus;
@@ -83,7 +84,7 @@ class Participant implements UserInterface
      */
     private $roles = [];
 
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->username;
     }

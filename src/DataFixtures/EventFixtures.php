@@ -37,13 +37,13 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                     $event->setState($this->getReference(StateFixtures::STATE_CREATING_REFERENCE));
                     break;
                 case 1:
-                    $event->setState($this->getReference(StateFixtures::STATE_ONGOING_REFERENCE));
+                    $event->setState($this->getReference(StateFixtures::STATE_PENDING_REFERENCE));
                     break;
                 case 2:
-                    $event->setState($this->getReference(StateFixtures::STATE_CLOSE_REFERENCE));
+                    $event->setState($this->getReference(StateFixtures::STATE_CLOSED_REFERENCE));
                     break;
                 case 3:
-                    $event->setState($this->getReference(StateFixtures::STATE_OPEN_REFERENCE));
+                    $event->setState($this->getReference(StateFixtures::STATE_OPENED_REFERENCE));
                     break;
             }
 

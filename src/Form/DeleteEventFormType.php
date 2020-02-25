@@ -14,7 +14,8 @@ class DeleteEventFormType extends AbstractType
     {
         $builder
             ->add('reason', TextType::class, [
-                'label' => 'Raison'
+                'label' => 'Raison',
+                'mapped' => false
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Annuler l\'évênement',

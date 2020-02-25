@@ -13,10 +13,12 @@ use InvalidArgumentException;
 class State
 {
     public const STATE_CREATING = 'En création';
-    public const STATE_OPEN = 'Ouvert';
+    public const STATE_OPENED = 'Ouvert';
+    public const STATE_CLOSED = 'Clôturé';
     public const STATE_PENDING = 'En cours';
-    public const STATE_CLOSE = 'Fermé';
+    public const STATE_FINISHED = 'Terminé';
     public const STATE_CANCELLED = 'Annulé';
+    public const STATE_HISTORISED = 'Historisée';
 
     /**
      * @ORM\Id()
@@ -42,7 +44,15 @@ class State
 
     public function setLabel(string $label): self
     {
-        if (!in_array($label, array(self::STATE_CREATING, self::STATE_OPEN, self::STATE_PENDING, self::STATE_CLOSE, self::STATE_CANCELLED))) {
+        if (!in_array($label, array(
+            self::STATE_CREATING,
+            self::STATE_OPENED,
+            self::STATE_CLOSED,
+            self::STATE_PENDING,
+            self::STATE_FINISHED,
+            self::STATE_CANCELLED,
+            self::STATE_HISTORISED
+        ))) {
             throw new InvalidArgumentException("Invalid state");
         }
 

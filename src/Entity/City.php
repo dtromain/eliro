@@ -35,7 +35,7 @@ class City
      */
     private $locations;
 
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->name;
     }

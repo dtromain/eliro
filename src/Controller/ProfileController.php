@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\ProfileFormType;
+use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,15 +20,21 @@ class ProfileController extends AbstractController
      * @Route("/profile", name="profile")
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
+     * @param EntityManagerInterface $em
+     * @param ParticipantRepository $pr
      * @return RedirectResponse|Response
      */
-    public function index(Request $request, UserPasswordEncoderInterface $encoder)
-    {
+    public function index(
+        Request $request,
+        UserPasswordEncoderInterface $encoder,
+        EntityManagerInterface $em,
+        ParticipantRepository $pr
+    ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $username = $request->get('username');
 
-        $participant = $this->getDoctrine()->getRepository(Participant::class)->findOneBy(['username'=>$username]);
+        $participant = $pr->findOneBy(['username'=>$username]);
 
         if($participant == null){
             $participant = $this->getUser();
@@ -50,9 +58,8 @@ class ProfileController extends AbstractController
                     $participant->setPassword($encoded_password);
                 }
 
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($participant);
-                $entityManager->flush();
+                $em->persist($participant);
+                $em->flush();
                 return $this->redirectToRoute('profile');
             }
 
@@ -66,7 +73,5 @@ class ProfileController extends AbstractController
                 'participant' => $participant
             ]);
         }
-
-
     }
 }

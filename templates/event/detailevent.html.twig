@@ -17,14 +17,49 @@
 
                 <div class="card-body">
                     <p>Nom de la sortie: {{ event.name }}</p>
-                    <p>Date de la sortie: {{ event.starttime|date("d/m/Y H:i") }}</p>
+                    <p>Date et heure de la sortie: {{ event.starttime|date("d/m/Y H:i") }}</p>
+                    <p>Date limite d'inscription: {{ event.lastInscriptionTime|date("d/m/Y H:i") }}</p>
+                    <p>Nombre de places: {{ event.places }}</p>
+                    <p>Durée: {{ event.duration }} minutes</p>
+                    <p>Description et infos: {{ event.information }}</p>
                     <p>Ville organisatrice: {{ event.campus.name }}</p>
-                    <p>Lieu: {{ event.location.name }} - {{ event.location.street }} {{ event.location.city.postcode }} {{ event.location.city.name }}</p>
+                    <p>Lieu: {{ event.location.name }}</p>
+                    <p>Rue:{{ event.location.street }}</p>
+                    <p>Code postal:{{ event.location.city.postcode }}</p>
+                    <p>Lattitude: {{ event.location.latitude }}</p>
+                    <p>Longitude: {{ event.location.longitude }}</p>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow md-4">
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped tablesorter" border="1">
+                                    <tr>
+                                        <th>Pseudo</th>
+                                        <th>Nom</th>
+                                    </tr>
+                                    {% for participant in event.participants %}
+                                        <tr>
+                                            <td>{{ participant.username }}</td>
+                                            <td>{{ participant.lastname }} - {{ participant.firstname }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     <br>
-                    {{ form_start(form) }}
-                    {{ form_row(form.reason) }}
-                    {{ form_row(form.save) }}
-                    {{ form_end(form) }}
+                    {% if form is defined %}
+                        {{ form_start(form) }}
+                        {{ form_row(form.reason) }}
+                        {{ form_row(form.save) }}
+                        {{ form_end(form) }}
+                    {% endif %}
+                    {% if event.reason != null %}
+                        <p>Annulé: {{ event.reason }}</p>
+                    {% endif %}
                     <a class="btn btn-primary" href="{{ path('index') }}">Retour</a>
                 </div>
             </div>

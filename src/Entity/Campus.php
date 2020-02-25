@@ -26,7 +26,7 @@ class Campus
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="campus", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="campus")
      */
     private $events;
 
@@ -35,7 +35,7 @@ class Campus
      */
     private $participants;
 
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->name;
     }
