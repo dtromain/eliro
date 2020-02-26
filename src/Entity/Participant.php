@@ -8,10 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\ParticipantRepository")
+ * @UniqueEntity(fields="mail", message="L'addresse mail saisie est déja utilisée.")
+ * @UniqueEntity(fields="username", message="Le pseudo saisi est déja utilisé.")
  */
 class Participant implements UserInterface
 {
@@ -36,12 +40,18 @@ class Participant implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Regex(
+     *     pattern="/^((\+)33|0)[1-9](\d{2}){4}$/",
+     *     match=true,
+     *     message="Le numéro de téléphone doit être au format +33 (0)X XX XX XX XX où X est un nombre entier naturel positif compris entre 0 et 9 inclus."
+     * )
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      * @Assert\NotBlank(message="L'adresse mail doit être renseignée.")
+     * @Assert\Email()
      */
     private $mail;
 

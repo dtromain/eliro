@@ -28,10 +28,10 @@
                             {{ form_start(form) }}
                             <tr>
                                 <td>{{ form_widget(form.name) }}</td>
-                                <td>{{ form_widget(form.save, {'attr': {'id': 'save_btn'}}) }}</td>
+                                <td>{{ form_widget(form.save) }}</td>
                             </tr>
                             {{ form_end(form) }}
-                            {% for campus in campuses %}
+                            {% for campus in campusList %}
                                 <tr>
                                     <td>{{ campus.name }}</td>
                                     <td>

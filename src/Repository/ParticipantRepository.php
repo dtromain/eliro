@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Participant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
@@ -20,12 +22,20 @@ class ParticipantRepository extends ServiceEntityRepository implements UserLoade
         parent::__construct($registry, Participant::class);
     }
 
-    public function loadUserByUsername($usernameOrEmail)
+    public function loadUserByUsername(string $usernameOrEmail)
     {
-        return
-            $this->createQuery('SELECT u FROM App\Entity\Participant u WHERE u.username = :query OR u.email = :query')
-            ->setParameter('query', $usernameOrEmail)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.username = :query')
+            ->orWhere('u.mail = :query')
+            ->setParameter('query', $usernameOrEmail);
+
+        try {
+            return $qb->getQuery()
+                ->getSingleResult();
+        } catch (NoResultException $e) {
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
+
     }
 }

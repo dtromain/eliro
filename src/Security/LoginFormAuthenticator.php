@@ -68,11 +68,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(Participant::class)->findOneBy(['mail' => $credentials['mail']]);
+        $user = $this->entityManager->getRepository(Participant::class)->loadUserByUsername($credentials['mail']);
 
         if (!$user) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Mail could not be found.');
+            throw new CustomUserMessageAuthenticationException('Pseudo ou adresse mail est inconnu.');
         }
 
         return $user;

@@ -41,8 +41,14 @@
                                     </tr>
                                     {% for participant in event.participants %}
                                         <tr>
-                                            <td>{{ participant.username }}</td>
-                                            <td>{{ participant.lastname }} - {{ participant.firstname }}</td>
+                                            <td>
+                                                {% if participant != app.user %}
+                                                    <a href="{{ path('profile', {'id': participant.id}) }}">{{ participant.username }}</a>
+                                                {% else %}
+                                                    {{ participant.username }}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ participant.firstname }} {{ participant.lastname }}</td>
                                         </tr>
                                     {% endfor %}
                                 </table>
