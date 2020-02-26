@@ -2,23 +2,21 @@
 
 namespace App\Controller;
 
-use App\DataFixtures\StateFixtures;
 use App\Entity\Campus;
 use App\Entity\Event;
-use App\Entity\Participant;
 use App\Entity\State;
 use App\Form\DeleteEventFormType;
 use App\Form\EventFormType;
 use App\Form\IndexFormType;
 use App\Repository\EventRepository;
 use App\Repository\StateRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTime;
-use function Webmozart\Assert\Assert;
 
 class EventController extends AbstractController
 {
@@ -27,9 +25,9 @@ class EventController extends AbstractController
      * @param EntityManagerInterface $em
      * @param Request $request
      * @return Response
+     * @throws Exception
      */
-    public function listEvents(EntityManagerInterface $em, Request $request)
-    {
+    public function eventList(EntityManagerInterface $em, Request $request) {
         if ($request->query->get('page')) {
             $page = $request->query->get('page');
         } else {
@@ -101,13 +99,10 @@ class EventController extends AbstractController
             $listFilter['isNotParticipating'] = true;
             $listFilter['isPassed'] = false;
             $listFilter['user'] = $this->getUser()->getId();
-
         }
-
 
         $list = $em->getRepository(Event::class)->findByPageFilter($page, $itemPerPage, $listFilter);
         $listAll = $em->getRepository(Event::class)->findFilter($listFilter);
-
 
         $numberOfPage = count($listAll) / $itemPerPage;
 
@@ -129,7 +124,6 @@ class EventController extends AbstractController
 
 
         $form->handleRequest($request);
-
         return $this->render('event/index.html.twig', [
             'list' => $list,
             'numberOfPage' => (int)$numberOfPage,
@@ -138,152 +132,146 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/newevent", name="newevent")
+     * @Route("/createevent/{id?}", name="event_create")
      * @param EntityManagerInterface $em
+     * @param EventRepository $er
+     * @param StateRepository $sr
      * @param Request $request
+     * @param int|null $id
      * @return Response
      */
-    public function createEvent(EntityManagerInterface $em, Request $request)
-    {
-
-        $event = $request->query->get('event');
-
-        if (!$event) {
+    public function createEvent(EntityManagerInterface $em, EventRepository $er, StateRepository $sr, Request $request, int $id = null) {
+        if($id != null) {
+            $event = $er->find($id);
+        } else {
             $event = new Event();
         }
-
-        $creating =$em->getRepository(State::class)->findOneBy([
-            'label' => 'En création'
-        ]);
-        $event->setState($creating);
         $form = $this->createForm(EventFormType::class, $event);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);
-            $entityManager->flush();
-
-            return $this->render('event/newevent.html.twig', [
-                'form' => $form->createView()
-            ]);
+            $planner = $this->getUser();
+            $state = $sr->findOneBy(['label'=>State::STATE_CREATING]);
+            $event->setState($state);
+            $event->setPlanner($planner);
+            $event->setCampus($planner->getCampus());
+            $em->persist($event);
+            $em->flush();
+            return $this->redirectToRoute('event_detail', ['id' => $event->getId()]);
         }
-
         return $this->render('event/newevent.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/event", name="event")
+     * @Route("/deleteevent/{id}", name="event_delete", requirements={"id"="\d+"})
      * @param EntityManagerInterface $em
      * @param EventRepository $er
-     * @param StateRepository $sr
      * @param Request $request
+     * @param int $id
      * @return Response
      */
-    public function detailEvent(EntityManagerInterface $em, EventRepository $er, StateRepository $sr, Request $request) {
-
-        $id = $request->query->get('id');
+    public function deleteEvent(EntityManagerInterface $em, EventRepository $er, Request $request, int $id) {
         $event = $er->find($id);
+        if($event->getState()->getLabel() == State::STATE_CREATING) {
+            if($event->getPlanner() == $this->getUser()) {
+                $em->remove($event);
+                $em->flush();
+            }
+        }
+        return $this->render('event/index.html.twig');
+    }
 
-        $form = $this->createForm(DeleteEventFormType::class, $event);
-        $form->handleRequest($request);
+    /**
+     * @Route("/event/{id?}", name="event_detail", requirements={"id"="\d+"})
+     * @param EntityManagerInterface $em
+     * @param StateRepository $sr
+     * @param EventRepository $er
+     * @param Request $request
+     * @param int|null $id
+     * @return Response
+     */
+    public function eventDetail(EntityManagerInterface $em, StateRepository $sr, EventRepository $er, Request $request, int $id = null) {
+        $event = $er->find($id);
+        if($event->getState()->getLabel() == State::STATE_OPENED) {
+            $form = $this->createForm(DeleteEventFormType::class, $event);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                if ($event->getPlanner() == $this->getUser()) {
+                    if ($event->getState()->getLabel() != State::STATE_PENDING) {
+                        $cancelled = $sr->findOneBy(['label' => State::STATE_CANCELLED]);
+                        $event->setState($cancelled);
+                        $reason = $form->get('reason')->getData();
+                        $event->setReason($reason);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $reason = $form->get('reason')->getData();
-            $state_cancelled = $sr->findOneBy(['label' => State::STATE_CANCELLED]);
-            $event->setState($state_cancelled);
-            $event->setReason($reason);
-
-            $em->persist($event);
-            $em->flush();
-
+                        $em->persist($event);
+                        $em->flush();
+                    }
+                    return $this->redirectToRoute('event_detail', ['id'=>$event->getId()]);
+                }
+            }
             return $this->render('event/detailevent.html.twig', [
-                'event'=>$event
+                'event' => $event,
+                'form' => $form->createView()
             ]);
         }
-
-        return $this->render('event/detailevent.html.twig', ['event'=>$event,
-            'form'=>$form
+        return $this->render('event/detailevent.html.twig', [
+            'event'=>$event
         ]);
     }
 
     /**
-     * @Route("/deleteevent", name="deleteevent")
+     * @Route("/subscribe/{id}", name="event_subscribe")
      * @param EntityManagerInterface $em
+     * @param StateRepository $sr
+     * @param EventRepository $er
      * @param Request $request
+     * @param int|null $id
      * @return Response
+     * @throws Exception
      */
-    public function deteteEvent(EntityManagerInterface $em, Request $request) {
-
-        $id = $request->query->get('id');
-        $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
-
-        $form = $this->createForm(DeleteEventFormType::class, $event);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if($event->getPlanner() == $this->getUser()) {
-                if($event->getState()->getLabel() != State::STATE_PENDING)
-                {
-                    $em->remove($event);
+    public function subscribe(EntityManagerInterface $em, StateRepository $sr, EventRepository $er, Request $request, int $id = null) {
+        $event = $er->find($id);
+        $now = new DateTime();
+        if($event->getLastInscriptionTime() >= $now) {
+            if($event->getState()->getLabel() == State::STATE_OPENED) {
+                if ($event->getParticipants()->count() <= $event->getPlaces()) {
+                    $event->addParticipant($this->getUser());
+                } else {
+                    $state = $sr->findOneBy(['label'=>State::STATE_CLOSED]);
+                    $event->setState($state);
                 }
             }
         }
-
+        $em->persist($event);
+        $em->flush();
         return $this->redirect($this->generateUrl('index'));
     }
 
     /**
-     * @Route("/subscribe", name="subscribe")
-     * @param EntityManagerInterface $em
+     * @Route("/unscribe/{id}", name="event_unscribe")
      * @param EventRepository $er
+     * @param StateRepository $sr
+     * @param EntityManagerInterface $em
      * @param Request $request
+     * @param int|null $id
      * @return Response
+     * @throws Exception
      */
-    public function subscribe(EntityManagerInterface $em, EventRepository $er, Request $request) {
-
-        $id = $request->query->get('id');
-
+    public function unscribe(EventRepository $er, StateRepository $sr, EntityManagerInterface $em, Request $request, int $id = null) {
         $event = $er->find($id);
-        $user = $this->getUser();
-
-        if($event->getState()->getLabel() == State::STATE_OPEN) {
-            if ($event->getParticipants()->count() <= $event->getPlaces()) {
-                $event->addParticipant($user);
+        if($event->getState()->getLabel() == State::STATE_OPENED) {
+            $event->removeParticipant($this->getUser());
+        } else if($event->getState()->getLabel() == State::STATE_CLOSED) {
+            $now = new DateTime();
+            if($event->getLastInscriptionTime() >= $now) {
+                $event->removeParticipant($this->getUser());
+                $state = $sr->findOneBy(['label'=>State::STATE_OPENED]);
+                $event->setState($state);
             }
         }
-
         $em->persist($event);
         $em->flush();
-
         return $this->redirect($this->generateUrl('index'));
     }
-
-    /**
-     * @Route("/unscribe", name="unscribe")
-     * @param EventRepository $er
-     * @param EntityManagerInterface $em
-     * @param Request $request
-     * @return Response
-     */
-    public function unscribe(EventRepository $er, EntityManagerInterface $em, Request $request) {
-
-        $id = $request->query->get('id');
-
-        $event = $er->find($id);
-        $user = $this->getUser();
-
-        if($event->getState()->getLabel() == State::STATE_OPEN) {
-            $event->removeParticipant($user);
-        }
-
-        $em->persist($event);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('index'));
-    }
-
 }

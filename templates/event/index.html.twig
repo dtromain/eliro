@@ -32,9 +32,10 @@
                         {{ form_row(form.isParticipating) }}
                         {{ form_row(form.isNotParticipating) }}
                         {{ form_row(form.isPassed) }}
+                        {{ form_row(form.filter, { 'label': 'Filtrer' }) }}
                     </div>
                 </div>
-                {{ form_row(form.filter, { 'label': 'Filtrer' }) }}
+
                 {{ form_end(form) }}
             </div>
         </div>
@@ -52,7 +53,6 @@
                             <th>Clôture</th>
                             <th>Inscrits / Places</th>
                             <th>Etat</th>
-                            <th>campus</th>
                             <th>Inscrit</th>
                             <th>Organisateur</th>
                             <th>Actions</th>
@@ -80,24 +80,31 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    {% if event.state.label == 'Fermé' %}
-                                        <a href="{{ path('event', {'id': event.id}) }}">Afficher</a>
-                                    {% elseif event.state.label == 'En cours' %}
-                                        <a href="{{ path('event', {'id': event.id}) }}">Afficher</a>
-                                    {% elseif (event.state.label == 'En création') and (event.planner == app.user) %}
-                                        <a href="{{ path('event', {'id': event.id}) }}">Modifier</a>
-                                        - <a href="#">Publier</a>
-                                    {% elseif event.state.label == 'Ouvert' %}
-                                        <a href="{{ path('event', {'id': event.id}) }}">Afficher</a> -
+                                    {% if event.state.label == constant('App\\Entity\\State::STATE_CLOSED') %}
+                                        <a href="{{ path('event_detail', {'id': event.id}) }}">Afficher</a>
+
+                                    {% elseif event.state.label == constant('App\\Entity\\State::STATE_PENDING') %}
+                                        <a href="{{ path('event_detail', {'id': event.id}) }}">Afficher</a>
+
+                                    {% elseif (event.state.label == constant('App\\Entity\\State::STATE_CREATING')) and (event.planner == app.user) %}
+                                        <a href="{{ path('event_detail', {'id': event.id}) }}">Modifier</a>
+                                        - <a href="{{ path('event_detail', {'id': event.id}) }}">Publier</a>
+
+                                    {% elseif event.state.label == constant('App\\Entity\\State::STATE_OPENED') %}
+                                        <a href="{{ path('event_detail', {'id': event.id}) }}">Afficher</a> -
                                         {% if event.planner != app.user  %}
                                             {% if event.participants.contains(app.user) %}
-                                                <a class="text-warning" href="{{ path('unscribe', {'id': event.id}) }}">Se désister</a>
+                                                <a class="text-warning" href="{{ path('event_unscribe', {'id': event.id}) }}">Se désister</a>
                                             {% else %}
-                                                <a class="text-success" href="{{ path('subscribe', {'id': event.id}) }}">S'inscrire</a>
+                                                <a class="text-success" href="{{ path('event_subscribe', {'id': event.id}) }}">S'inscrire</a>
                                             {% endif %}
                                         {% else %}
-                                            <a class="text-danger" href="{{ path('event', {'id': event.id}) }}">Annuler</a>
+                                            <a class="text-danger" href="{{ path('event_detail', {'id': event.id}) }}">Annuler</a>
                                         {% endif %}
+
+                                    {% elseif event.state.label == constant('App\\Entity\\State::STATE_CANCELLED') %}
+                                        <a href="{{ path('event_detail', {'id': event.id}) }}">Afficher</a>
+
                                     {% endif %}
                                 </td>
                             </tr>

@@ -28,15 +28,15 @@
                             {{ form_start(form) }}
                             <tr>
                                 <td>{{ form_widget(form.name) }}</td>
-                                <td>{{ form_widget(form.save, {'attr': {'id': 'save_btn'}}) }}</td>
+                                <td>{{ form_widget(form.save) }}</td>
                             </tr>
                             {{ form_end(form) }}
-                            {% for campus in campuses %}
+                            {% for campus in campusList %}
                                 <tr>
                                     <td>{{ campus.name }}</td>
                                     <td>
-                                        <a class="btn btn-warning" href="{{ path('modifycampus', {'id': campus.id}) }}">Modify</a>
-                                        <a class="btn btn-danger" href="{{ path('deletecampus', {'id': campus.id}) }}">Delete</a>
+                                        <a class="btn btn-warning" href="{{ path('campus_list', {'id': campus.id}) }}">Modify</a>
+                                        <a class="btn btn-danger" href="{{ path('campus_delete', {'id': campus.id}) }}">Delete</a>
                                     </td>
                                 </tr>
                             {% endfor %}

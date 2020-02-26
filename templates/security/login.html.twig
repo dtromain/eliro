@@ -16,7 +16,7 @@
                                 <div class="col-lg-6">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                            <h1 class="h4 text-gray-900 mb-4">Bienvenue !</h1>
                                         </div>
                                         <form class="user" method="post">
 
@@ -31,28 +31,31 @@
                                             {% endif %}
 
                                             <div class="form-group">
-                                                <input type="email" value="{{ last_username }}" class="form-control form-control-user"
-                                                       name="mail" id="inputMail" aria-describedby="emailHelp" placeholder="Enter Email Address..." required autofocus>
+                                                <input type="text" value="{{ last_username }}" class="form-control form-control-user"
+                                                       name="mail" id="inputMail" aria-describedby="emailHelp" placeholder="Pseudo ou Email" required autofocus>
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" class="form-control form-control-user" name="password" id="inputPassword" placeholder="Password" required>
+                                                <input type="password" class="form-control form-control-user" name="password" id="inputPassword" placeholder="Mot de passe" required>
                                             </div>
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox small">
                                                     <input type="checkbox" class="custom-control-input" id="customCheck" name="_remember_me">
-                                                    <label class="custom-control-label" for="customCheck">Remember Me</label>
+                                                    <label class="custom-control-label" for="customCheck">Se souvenir de moi</label>
                                                 </div>
                                             </div>
                                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                                             <div class="mb-3 text-center">
-                                                <button class="btn btn-lg btn-primary" type="submit">
-                                                    Sign in
+                                                <button class="mb-3 btn btn-lg btn-primary col-md-12" type="submit">
+                                                    Connexion
                                                 </button>
+                                                <a class="mb-3 btn btn-lg btn-secondary col-md-12" href="#" data-toggle="modal" data-target="#cancelLoginModal">
+                                                    Annuler
+                                                </a>
                                             </div>
                                         </form>
                                         <hr>
                                         <div class="text-center">
-                                            <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                            <a class="small" href="forgot-password.html">Mot de passe oublié ?</a>
                                         </div>
                                     </div>
                                 </div>
@@ -63,8 +66,33 @@
             </div>
         </div>
 
-        {% block script %}
-        {% endblock %}
+        <!-- Cancel login Modal-->
+        <div class="modal fade" id="cancelLoginModal" tabindex="-1" role="dialog" aria-labelledby="cancelLoginModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelLoginModalLabel">Souhaitez-vous vraiment ne pas vous connecter ?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Selectionnez "Annuler l'annulation" ci-dessous si vous souhaitez mettre fin à l'annulation de la tentative de connexion.'</div>
+                    <div class="modal-footer">
+                        <a class="btn btn-danger" href="{{ path('app_login') }}">Confirmer l'annulation</a>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler l'annulation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
     </body>
 {% endblock %}

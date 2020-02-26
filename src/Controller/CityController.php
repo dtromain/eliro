@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Form\CityFormType;
+use App\Repository\CityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,66 +14,54 @@ use Symfony\Component\Routing\Annotation\Route;
 class CityController extends AbstractController
 {
     /**
-     * @Route("/cities", name="cities")
+     * @Route("/city/{id?}", name="city_list", requirements={"id"="\d+"})
      * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param CityRepository $cr
+     * @param int|null $id
      * @return Response
      */
-    public function index(Request $request)
-    {
-
-        $city = $request->query->get('city');
-
-        if(!$city) {
+    public function city_list(Request $request, EntityManagerInterface $em, CityRepository $cr, int $id = null) {
+        $cityList = $cr->findAll();
+        if($id != null) {
+            $city = $cr->find($id);
+        } else {
             $city = new City();
         }
-
         $form = $this->createForm(CityFormType::class, $city);
         $form->handleRequest($request);
 
-        $cities = $this->getDoctrine()->getRepository(City::class)->findAll();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($city);
-            $entityManager->flush();
-
-            return $this->redirect($this->generateUrl('cities'));
+        // Remove the current edited city from the city list
+        $i = 0;
+        foreach ($cityList as $city_iter) {
+            if($city_iter === $city) {
+                unset($cityList[$i]);
+            }
+            $i++;
         }
-
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($city);
+            $em->flush();
+            return $this->redirect($this->generateUrl('city_list'));
+        }
         return $this->render('city/index.html.twig', [
             'form' => $form->createView(),
-            'cities'=> $cities
+            'cities'=> $cityList
         ]);
     }
 
     /**
-     * @Route("/deletecity", name="deletecity")
+     * @Route("/deletecity", name="city_delete")
      * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param CityRepository $cr
      * @return Response
      */
-    public function deleteCity(Request $request)
-    {
+    public function deleteCity(Request $request, EntityManagerInterface $em, CityRepository $cr) {
         $id = $request->query->get('id');
-        $em = $this->getDoctrine()->getManager();
-        $city = $em->getRepository(City::class)->findOneById($id);
+        $city = $cr->find($id);
         $em->remove($city);
         $em->flush();
-        return $this->redirect($this->generateUrl('cities'));
-    }
-
-    /**
-     * @Route("/modifycity", name="modifycity")
-     * @param Request $request
-     * @return Response
-     */
-    public function modifyCity(Request $request)
-    {
-        $id = $request->query->get('id');
-        $em = $this->getDoctrine()->getManager();
-        $city = $em->getRepository(City::class)->findOneById($id);
-        return $this->redirect($this->generateUrl('cities', [
-            'city' => $city
-        ]));
+        return $this->redirect($this->generateUrl('city_list'));
     }
 }
