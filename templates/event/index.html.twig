@@ -64,6 +64,7 @@
                                 <td>{{ event.lastInscriptionTime | date('d/m/Y H:i') }} </td>
                                 <td>{{ event.participants.count() }} / {{ event.places }}</td>
                                 <td>{{ event.state.label }} </td>
+                                <td>{{ event.campus.name }} </td>
                                 <td>
                                     {% if  event.participants.contains(app.user)%}
                                         Oui
@@ -102,6 +103,7 @@
                             </tr>
                         {% endfor %}
                     </table>
+                    <!--
                     <div>
                         <div class="bs-dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
                             <ul class="pagination">
@@ -113,6 +115,7 @@
                             </ul>
                         </div>
                     </div>
+                    !-->
                 </div>
             </div>
         </div>

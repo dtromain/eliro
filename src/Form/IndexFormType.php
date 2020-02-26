@@ -21,7 +21,7 @@ class IndexFormType extends AbstractType
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
                 'required' => true,
-                'label' => 'Site'
+                'label' => 'Site',
             ])
             ->add('search', TextType::class, [
                 'required' => false,

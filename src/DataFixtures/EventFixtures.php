@@ -14,11 +14,11 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         // create 20 products! Bam!
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             $event = new Event();
 
             try {
-                $randomDate = new DateTime(sprintf('-%d days', rand(-30, 30)));
+                $randomDate = new DateTime(sprintf('-%d days', rand(-60, 60)));
             } catch (Exception $e) {
             }
             $event->setStarttime($randomDate);
