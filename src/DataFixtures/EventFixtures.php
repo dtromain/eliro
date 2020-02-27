@@ -35,28 +35,39 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
 
             $event->setInformation('');
 
-            switch (rand(0, 6)) {
-                case 0:
-                    $event->setState($this->getReference(StateFixtures::STATE_CREATING_REFERENCE));
-                    break;
-                case 1:
-                    $event->setState($this->getReference(StateFixtures::STATE_OPENED_REFERENCE));
-                    break;
-                case 2:
+            if($randomDate>new DateTime()){
+                if($lastinscriptiondate<new DateTime()){
                     $event->setState($this->getReference(StateFixtures::STATE_CLOSED_REFERENCE));
-                    break;
-                case 3:
-                    $event->setState($this->getReference(StateFixtures::STATE_PENDING_REFERENCE));
-                    break;
-                case 4:
-                    $event->setState($this->getReference(StateFixtures::STATE_FINISHED_REFERENCE));
-                    break;
-                case 5:
-                    $event->setState($this->getReference(StateFixtures::STATE_CANCELLED_REFERENCE));
-                    break;
-                case 6:
-                    $event->setState($this->getReference(StateFixtures::STATE_HISTORISED_REFERENCE));
-                    break;
+                }else {
+                    switch (rand(0, 3)) {
+                        case 0:
+                            $event->setState($this->getReference(StateFixtures::STATE_CREATING_REFERENCE));
+                            break;
+                        case 1:
+                            $event->setState($this->getReference(StateFixtures::STATE_OPENED_REFERENCE));
+                            break;
+                        case 2:
+                            $event->setState($this->getReference(StateFixtures::STATE_CLOSED_REFERENCE));
+                            break;
+                        case 3:
+                            $event->setState($this->getReference(StateFixtures::STATE_CANCELLED_REFERENCE));
+                            $event->setReason("Pandemie, loi martial, génocide, ou autres");
+                            break;
+                    }
+                }
+            }else{
+                switch (rand(0, 2)) {
+                    case 0:
+                        $event->setState($this->getReference(StateFixtures::STATE_FINISHED_REFERENCE));
+                        break;
+                    case 1:
+                        $event->setState($this->getReference(StateFixtures::STATE_CANCELLED_REFERENCE));
+                        $event->setReason("Chute de pierre en interieur.");
+                        break;
+                    case 2:
+                        $event->setState($this->getReference(StateFixtures::STATE_HISTORISED_REFERENCE));
+                        break;
+                }
             }
 
             switch (rand(0, 3)) {
@@ -94,6 +105,9 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                     $participant = $this->getReference('PARTICIPANT_' . $participantId . '_REFERENCE');
                     $event->addParticipant($participant);
                 }
+            }
+            if (($event->getParticipants()->count()==$event->getPlaces())&&($event->getStarttime()>new DateTime())){
+                $event->setState($this->getReference(StateFixtures::STATE_CLOSED_REFERENCE));
             }
             $manager->persist($event);
         }
