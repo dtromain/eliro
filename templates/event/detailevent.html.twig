@@ -60,18 +60,36 @@
                     {% if form is defined %}
                         {{ form_start(form) }}
                         {{ form_row(form.reason) }}
-                        <button class="btn btn-primary" type="submit">
+                        <a class="btn btn-secondary btn-lg" href="{{ path('index') }}">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-save"></i>
+                        </span>
+                            <span class="text">Retour</span>
+                        </a>
+                        {{ form_end(form) }}
+                        <button class="btn btn-danger btn-lg" type="reset">
+                            <span class="icon text-white-50">
+                              <i class="fas fa-backspace"></i>
+                            </span>
+                            <span class="text">Annuler</span>
+                        </button>
+                        <button class="btn btn-primary btn-lg" type="submit">
                             <span class="icon text-white-50">
                               <i class="fas fa-save"></i>
                             </span>
                             <span class="text">Enregistrer</span>
                         </button>
-                        {{ form_end(form) }}
+                    {% else %}
+                        <a class="btn btn-secondary btn-lg" href="{{ path('index') }}">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-save"></i>
+                        </span>
+                            <span class="text">Retour</span>
+                        </a>
                     {% endif %}
                     {% if event.reason != null %}
                         <p>Annulé: {{ event.reason }}</p>
                     {% endif %}
-                    <a class="btn btn-primary" href="{{ path('index') }}">Retour</a>
                 </div>
             </div>
         </div>

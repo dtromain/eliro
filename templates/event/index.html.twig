@@ -94,8 +94,8 @@
                                 </td>
                                 <td>
                                     {% if (event.state.label == constant('App\\Entity\\State::STATE_CREATING')) and (event.planner == app.user) %}
-                                        <a href="{{ path('event_detail', {'id': event.id}) }}">Modifier</a>
-                                        - <a href="{{ path('event_detail', {'id': event.id}) }}">Publier</a>
+                                        <a href="{{ path('event_create', {'id': event.id}) }}">Modifier</a>
+                                        - <a href="{{ path('event_create', {'id': event.id}) }}">Publier</a>
 
                                     {% elseif event.state.label == constant('App\\Entity\\State::STATE_OPENED') %}
                                         <a href="{{ path('event_detail', {'id': event.id}) }}">Afficher</a> -

@@ -1,8 +1,0 @@
-vich_uploader:
-    db_driver: orm
-
-    mappings:
-        participants_images:
-            uri_prefix:         '%app.path.participants_images%'
-            upload_destination: '%kernel.project_dir%/public%app.path.participants_images%'
-

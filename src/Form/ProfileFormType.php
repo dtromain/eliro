@@ -28,7 +28,7 @@ class ProfileFormType extends AbstractType
                 'required' => false
             ])
             ->add('mail', EmailType::class, [
-                'label' => 'Adresse mail'
+                'label' => 'Adresse électronique'
             ])
             ->add('username', TextType::class, [
                 'label' => 'Pseudo'

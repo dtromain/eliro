@@ -17,7 +17,6 @@ class DeleteEventFormType extends AbstractType
                 'label' => 'Raison',
                 'mapped' => false
             ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

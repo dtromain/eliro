@@ -143,8 +143,10 @@ class EventController extends AbstractController
     public function createEvent(EntityManagerInterface $em, EventRepository $er, StateRepository $sr, Request $request, int $id = null) {
         if($id != null) {
             $event = $er->find($id);
+            $update = true;
         } else {
             $event = new Event();
+            $update = false;
         }
         $form = $this->createForm(EventFormType::class, $event);
         $form->handleRequest($request);
@@ -161,6 +163,8 @@ class EventController extends AbstractController
         }
         return $this->render('event/newevent.html.twig', [
             'form' => $form->createView(),
+            'update' => $update,
+            'event' => $event
         ]);
     }
 
@@ -183,7 +187,7 @@ class EventController extends AbstractController
             }
         }
         return $this->render('event/detailevent.html.twig', [
-            'event' => $event
+            'event' => $event,
         ]);
     }
 
@@ -204,6 +208,29 @@ class EventController extends AbstractController
             }
         }
         return $this->render('event/index.html.twig');
+    }
+
+    /**
+     * @Route("/publishevent/{id}", name="event_publish", requirements={"id"="\d+"})
+     * @param EntityManagerInterface $em
+     * @param EventRepository $er
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function publishEvent(EntityManagerInterface $em, StateRepository $sr, EventRepository $er, Request $request, int $id) {
+        $event = $er->find($id);
+        if($event->getState()->getLabel() == State::STATE_CREATING) {
+            if($event->getPlanner() == $this->getUser()) {
+                $state = $sr->findOneBy(['label'=>State::STATE_OPENED]);
+                $event->setState($state);
+                $em->persist($event);
+                $em->flush();
+            }
+        }
+        return $this->render('event/detailevent.html.twig', [
+            'event' => $event
+        ]);
     }
 
     /**

@@ -30,7 +30,7 @@ class RegisterFormType extends AbstractType
                 'label' => 'Téléphone'
             ])
             ->add('mail', EmailType::class, [
-                'label' => 'Mail',
+                'label' => 'Adresse électronique',
             ])
             ->add('username', TextType::class, [
                 'label' => 'Pseudo'
