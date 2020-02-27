@@ -15,10 +15,6 @@ class ParticipantFixtures extends Fixture
 
     public const PARTICIPANT_NUMBER = 50;
 
-    public const PARTICIPANT_ROOT_REFERENCE = 'participant-root';
-    public const PARTICIPANT_MARTIN_REFERENCE = 'participant-martin';
-    public const PARTICIPANT_JULIE_REFERENCE = 'participant-julie';
-
     public function __construct(UserPasswordEncoderInterface $encoder) {
         $this->encoder = $encoder;
     }
@@ -38,7 +34,7 @@ class ParticipantFixtures extends Fixture
             $this->encoder->encodePassword($root, 'password')
         );
         $root->setCampus($this->getReference(CampusFixtures::CAMPUS_NANTES_REFERENCE));
-        $this->setReference(self::PARTICIPANT_ROOT_REFERENCE, $root);
+        $this->setReference('PARTICIPANT_0_REFERENCE', $root);
         $manager->persist($root);
 
         $martin = new Participant();
@@ -51,7 +47,7 @@ class ParticipantFixtures extends Fixture
             $this->encoder->encodePassword($martin, 'password')
         );
         $martin->setCampus($this->getReference(CampusFixtures::CAMPUS_RENNES_REFERENCE));
-        $this->setReference(self::PARTICIPANT_MARTIN_REFERENCE, $martin);
+        $this->setReference('PARTICIPANT_1_REFERENCE', $martin);
         $manager->persist($martin);
 
         $julie = new Participant();
@@ -64,18 +60,20 @@ class ParticipantFixtures extends Fixture
             $this->encoder->encodePassword($julie, 'password')
         );
         $julie->setCampus($this->getReference(CampusFixtures::CAMPUS_NANTES_REFERENCE));
-        $this->setReference(self::PARTICIPANT_JULIE_REFERENCE, $julie);
+        $this->setReference('PARTICIPANT_2_REFERENCE', $julie);
         $manager->persist($julie);
 
-        for ($i = 0; $i < self::PARTICIPANT_NUMBER; $i++) {
+        for ($i = 3; $i < self::PARTICIPANT_NUMBER; $i++) {
             $participant = new Participant();
             $participant->setFirstname($faker->firstName);
             $participant->setLastname($faker->lastName);
             $participant->setPhone($faker->phoneNumber);
-            $participant->setMail($faker->email);
-            $participant->setUsername($faker->userName);
+            $mail = '' .  $participant->getFirstname() . '.' . strtolower ($participant->getLastname()) . '@' . $faker->domainName;
+            $participant->setMail($mail);
+            $username = '' . $participant->getFirstname() . '.' . $participant->getLastname();
+            $participant->setUsername($username);
             $participant->setPassword(
-                $this->encoder->encodePassword($participant, $faker->password)
+                $this->encoder->encodePassword($participant, 'password')
             );
             $rand = rand(1, self::PARTICIPANT_NUMBER);
             switch ($rand) {

@@ -13,10 +13,11 @@ use Exception;
 
 class EventFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const EVENT_NUMBER = 500;
+
     public function load(ObjectManager $manager)
     {
-        // create 20 products! Bam!
-        for ($i = 0; $i < 500; $i++) {
+        for ($i = 0; $i < self::EVENT_NUMBER; $i++) {
             $event = new Event();
 
             try {
@@ -73,43 +74,27 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                     break;
             }
 
-            switch (rand(0, 5)) {
-                case 0:
-                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_1_REFERENCE));
-                    break;
-                case 1:
-                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_2_REFERENCE));
-                    break;
-                case 2:
-                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_3_REFERENCE));
-                    break;
-                case 3:
-                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_4_REFERENCE));
-                    break;
-                case 4:
-                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_5_REFERENCE));
-                    break;
-                case 5:
-                    $event->setLocation($this->getReference(LocationFixtures::LOCATION_6_REFERENCE));
-                    break;
-            }
+            $locationId = rand(0, LocationFixtures::LOCATION_NUMBER-1);
+            $location = $this->getReference('LOCATION_'.$locationId.'_REFERENCE');
+            $event->setLocation($location);
 
-            for ($i = 0; $i < ParticipantFixtures::PARTICIPANT_NUMBER - 1; $i++) {
-                $planner = $this->getReference('PARTICIPANT_' . $i . '_REFERENCE');
-                $event->setPlanner($planner);
-            }
+            $plannerId = rand(0, ParticipantFixtures::PARTICIPANT_NUMBER-1);
+            $planner = $this->getReference('PARTICIPANT_' . $plannerId . '_REFERENCE');
+            $event->setPlanner($planner);
+            $event->addParticipant($planner);
 
-            $nbPlaces = mt_rand(1, 12) * 5;
+            $nbPlaces = rand(1, 12) * 5;
             $event->setPlaces($nbPlaces);
 
-            if ($event->getState()->getLabel() == State::STATE_OPENED) {
-                for ($i = 0; $i < rand(0, $nbPlaces); $i++) {
+
+            $l = rand(1, $nbPlaces-1);
+            if($event->getState()->getLabel() != State::STATE_CREATING) {
+                for ($k = 0; $k < $l ; $k++) {
                     $participantId = rand(0, ParticipantFixtures::PARTICIPANT_NUMBER - 1);
                     $participant = $this->getReference('PARTICIPANT_' . $participantId . '_REFERENCE');
                     $event->addParticipant($participant);
                 }
             }
-
             $manager->persist($event);
         }
         $manager->flush();

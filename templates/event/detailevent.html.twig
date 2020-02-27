@@ -43,7 +43,7 @@
                                         <tr>
                                             <td>
                                                 {% if participant != app.user %}
-                                                    <a href="{{ path('profile', {'id': participant.id}) }}">{{ participant.username }}</a>
+                                                    <a href="{{ path('profile', {'username': participant.username}) }}">{{ participant.username }}</a>
                                                 {% else %}
                                                     {{ participant.username }}
                                                 {% endif %}
@@ -61,9 +61,9 @@
                         {{ form_start(form) }}
                         {{ form_row(form.reason) }}
                         <button class="btn btn-primary" type="submit">
-                                                <span class="icon text-white-50">
-                                                  <i class="fas fa-save"></i>
-                                                </span>
+                            <span class="icon text-white-50">
+                              <i class="fas fa-save"></i>
+                            </span>
                             <span class="text">Enregistrer</span>
                         </button>
                         {{ form_end(form) }}

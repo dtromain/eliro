@@ -153,6 +153,7 @@ class EventController extends AbstractController
             $state = $sr->findOneBy(['label'=>State::STATE_CREATING]);
             $event->setState($state);
             $event->setPlanner($planner);
+            $event->addParticipant($planner);
             $event->setCampus($planner->getCampus());
             $em->persist($event);
             $em->flush();
@@ -160,6 +161,29 @@ class EventController extends AbstractController
         }
         return $this->render('event/newevent.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/cancelevent/{id?}", name="cancel_create")
+     * @param EntityManagerInterface $em
+     * @param EventRepository $er
+     * @param StateRepository $sr
+     * @param Request $request
+     * @param int|null $id
+     * @return Response
+     */
+    public function cancelEvent(EntityManagerInterface $em, EventRepository $er, StateRepository $sr, Request $request, int $id = null) {
+        if($id != null) {
+            $event = $er->find($id);
+        }
+        if($event->getPlanner() == $this->getUser()) {
+            if(in_array($event->getState()->getLabel(), array(State::STATE_CREATING, State::STATE_OPENED, State::STATE_CLOSED))) {
+                $event->setState(State::STATE_CANCELLED);
+            }
+        }
+        return $this->render('event/detailevent.html.twig', [
+            'event' => $event
         ]);
     }
 
@@ -235,11 +259,12 @@ class EventController extends AbstractController
         $now = new DateTime();
         if($event->getLastInscriptionTime() >= $now) {
             if($event->getState()->getLabel() == State::STATE_OPENED) {
-                if ($event->getParticipants()->count() <= $event->getPlaces()) {
+                if ($event->getParticipants()->count() < $event->getPlaces()) {
                     $event->addParticipant($this->getUser());
-                } else {
-                    $state = $sr->findOneBy(['label'=>State::STATE_CLOSED]);
-                    $event->setState($state);
+                    if ($event->getParticipants()->count() == $event->getPlaces()) {
+                        $state = $sr->findOneBy(['label' => State::STATE_CLOSED]);
+                        $event->setState($state);
+                    }
                 }
             }
         }
@@ -260,10 +285,13 @@ class EventController extends AbstractController
      */
     public function unscribe(EventRepository $er, StateRepository $sr, EntityManagerInterface $em, Request $request, int $id = null) {
         $event = $er->find($id);
+
         if($event->getState()->getLabel() == State::STATE_OPENED) {
             $event->removeParticipant($this->getUser());
+
         } else if($event->getState()->getLabel() == State::STATE_CLOSED) {
             $now = new DateTime();
+
             if($event->getLastInscriptionTime() >= $now) {
                 $event->removeParticipant($this->getUser());
                 $state = $sr->findOneBy(['label'=>State::STATE_OPENED]);
