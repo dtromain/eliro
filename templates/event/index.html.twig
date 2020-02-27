@@ -9,40 +9,48 @@
 
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                {# render the start tag and change the submission method #}
-                {{ form_start(form, {'method': 'GET'}) }}
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        {{ form_row(form.campus) }}
-                        {{ form_row(form.search) }}
-                        <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                                {{ form_row(form.first_date) }}
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                                {{ form_row(form.second_date) }}
+        <div class="accordion" id="accordionExample">
+            <div class="card-header card shadow md-4 d-md-none" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                            aria-expanded="true" aria-controls="collapseOne">
+                        Filtre
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseOne" class="card shadow md-4 collapse show" aria-labelledby="headingOne"
+                 data-parent="#accordionExample">
+                <div class="card-body">
+                    {# render the start tag and change the submission method #}
+                    {{ form_start(form, {'method': 'GET'}) }}
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            {{ form_row(form.campus) }}
+                            {{ form_row(form.search) }}
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    {{ form_row(form.first_date) }}
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    {{ form_row(form.second_date) }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 mt-4 col-sm-12">
-                        {{ form_row(form.isPlanner) }}
-                        {{ form_row(form.isParticipating) }}
-                        {{ form_row(form.isNotParticipating) }}
-                        {{ form_row(form.isPassed) }}
-                    </div>
-                </div>
-                <div class="row ">
-                    <button class="btn btn-primary btn-icon-split" type="submit">
+                        <div class="col-md-6 mt-4 col-sm-12">
+                            {{ form_row(form.isPlanner) }}
+                            {{ form_row(form.isParticipating) }}
+                            {{ form_row(form.isNotParticipating) }}
+                            {{ form_row(form.isPassed) }}
+                            <button class="btn btn-primary btn-icon-split" type="submit">
                         <span class="icon text-white-50">
                           <i class="fas fa-filter"></i>
                         </span>
-                        <span class="text">Filtrer</span>
-                    </button>
+                                <span class="text">Filtrer</span>
+                            </button>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
                 </div>
-                {{ form_end(form) }}
             </div>
         </div>
 
@@ -66,13 +74,13 @@
                         {% for event in list %}
                             <tr>
                                 <td>{{ event.name }}</td>
-                                <td>{{ event.starttime | date('d/m/Y H:i')}} </td>
+                                <td>{{ event.starttime | date('d/m/Y H:i') }} </td>
                                 <td>{{ event.lastInscriptionTime | date('d/m/Y H:i') }} </td>
                                 <td>{{ event.participants.count() }} / {{ event.places }}</td>
                                 <td>{{ event.state.label }} </td>
                                 <td>{{ event.campus.name }} </td>
                                 <td>
-                                    {% if  event.participants.contains(app.user)%}
+                                    {% if  event.participants.contains(app.user) %}
                                         Oui
                                     {% else %}
                                         Non
@@ -98,11 +106,13 @@
 
                                     {% elseif event.state.label == constant('App\\Entity\\State::STATE_OPENED') %}
                                         <a href="{{ path('event_detail', {'id': event.id}) }}">Afficher</a> -
-                                        {% if event.planner != app.user  %}
+                                        {% if event.planner != app.user %}
                                             {% if event.participants.contains(app.user) %}
-                                                <a class="text-warning" href="{{ path('event_unscribe', {'id': event.id}) }}">Se désister</a>
+                                                <a class="text-warning"
+                                                   href="{{ path('event_unscribe', {'id': event.id}) }}">Se désister</a>
                                             {% else %}
-                                                <a class="text-success" href="{{ path('event_subscribe', {'id': event.id}) }}">S'inscrire</a>
+                                                <a class="text-success"
+                                                   href="{{ path('event_subscribe', {'id': event.id}) }}">S'inscrire</a>
                                             {% endif %}
                                         {% else %}
                                             <a class="text-danger" href="{{ path('event_detail', {'id': event.id}) }}">Annuler</a>
@@ -121,7 +131,7 @@
                         <div class="bs-dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
                             <ul class="pagination">
                                 <li class="paginate_button page-item previous disabled"><a href="#" class="page-link">&laquo;</a></li>
-                                {% for i in 1..numberOfPage  %}
+                                {% for i in 1..numberOfPage %}
                                     <li class="paginate_button page-item"><a href="?page={{ i }}"class="page-link">{{ i }}</a></li>
                                 {% endfor %}
                                 <li class="paginate_button page-item next"><a href="#"class="page-link">&raquo;</a></li>
