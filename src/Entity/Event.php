@@ -31,16 +31,19 @@ class Event
     /**
      * @ORM\Column(type="datetime", nullable=false)
      * @Assert\GreaterThan("today UTC", message="La date de l'évênement doit être dans le futur.")
+     * @Assert\NotBlank(message="La date et l'heure de l'évênement doivent être renseignées.")
      */
     private $starttime;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
+     * @Assert\NotBlank(message="La durée de l'évênement doit être renseignée.")
      */
     private $duration;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @Assert\NotBlank(message="La date et l'heure de clôture des inscriptions doivent être renseignées.")
      */
     private $lastInscriptionTime;
 
@@ -51,7 +54,6 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\State")
-     *
      */
     private $state;
 

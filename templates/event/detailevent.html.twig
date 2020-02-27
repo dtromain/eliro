@@ -60,7 +60,12 @@
                     {% if form is defined %}
                         {{ form_start(form) }}
                         {{ form_row(form.reason) }}
-                        {{ form_row(form.save) }}
+                        <button class="btn btn-primary" type="submit">
+                                                <span class="icon text-white-50">
+                                                  <i class="fas fa-save"></i>
+                                                </span>
+                            <span class="text">Enregistrer</span>
+                        </button>
                         {{ form_end(form) }}
                     {% endif %}
                     {% if event.reason != null %}

@@ -52,9 +52,7 @@ class IndexFormType extends AbstractType
             ->add('isPassed', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Sorties passées'
-            ])
-            ->add('filter', SubmitType::class)
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

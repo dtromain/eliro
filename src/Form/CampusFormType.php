@@ -16,10 +16,7 @@ class CampusFormType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom'
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer']
-            );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
