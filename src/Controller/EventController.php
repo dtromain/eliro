@@ -53,13 +53,13 @@ class EventController extends AbstractController
                 'user' => $listFilter['user'] = $this->getUser()->getId(),
             );
             if ($index_form['first_date'] != "") {
-                $listFilter['first_date'] = $index_form['first_date'];
+                $listFilter['first_date'] = new DateTime($index_form['first_date']);
             } else {
                 $listFilter['first_date'] = new DateTime();
             }
 
-            if ($index_form['first_date'] != "") {
-                $listFilter['second_date'] = $index_form['second_date'];
+            if ($index_form['second_date'] != "") {
+                $listFilter['second_date'] = new DateTime($index_form['second_date']);
             } else {
                 $listFilter['second_date'] = "";
             }
@@ -111,6 +111,18 @@ class EventController extends AbstractController
         }
 
         $form = $this->createForm(IndexFormType::class);
+        $form->get('campus')->setData($listFilter['campus']);
+        $form->get('search')->setData($listFilter['search']);
+        $form->get('first_date')->setData($listFilter['first_date']);
+        if($listFilter['second_date']!=""){
+            $form->get('second_date')->setData($listFilter['second_date']);
+        }
+        $form->get('isPlanner')->setData($listFilter['isPlanner']);
+        $form->get('isParticipating')->setData($listFilter['isParticipating']);
+        $form->get('isNotParticipating')->setData($listFilter['isNotParticipating']);
+        $form->get('isPassed')->setData($listFilter['isPassed']);
+
+
         $form->handleRequest($request);
         return $this->render('event/index.html.twig', [
             'list' => $list,
