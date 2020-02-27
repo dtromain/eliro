@@ -32,9 +32,6 @@ class LocationFormType extends AbstractType
             ->add('city', EntityType::class, [
                 'label' => 'Ville',
                 'class' => City::class
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Ajouter'
             ]);
     }
 

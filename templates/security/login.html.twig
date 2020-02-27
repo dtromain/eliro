@@ -18,7 +18,7 @@
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">Bienvenue !</h1>
                                         </div>
-                                        <form class="user" method="post">
+                                        <form id="loginForm" class="user" method="post">
 
                                             {% if error %}
                                                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -76,9 +76,9 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Selectionnez "Annuler l'annulation" ci-dessous si vous souhaitez mettre fin à l'annulation de la tentative de connexion.'</div>
+                    <div class="modal-body">Selectionnez "Annuler l'annulation" ci-dessous si vous souhaitez mettre fin à la tentative d'annulation de la connexion.'</div>
                     <div class="modal-footer">
-                        <a class="btn btn-danger" href="{{ path('app_login') }}">Confirmer l'annulation</a>
+                        <button class="btn btn-danger" type="reset" data-dismiss="modal" onclick="document.getElementById('loginForm').reset();">Confirmer l'annulation</button>
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler l'annulation</button>
                     </div>
                 </div>

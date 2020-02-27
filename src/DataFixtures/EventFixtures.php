@@ -3,6 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Event;
+use App\Entity\Participant;
+use App\Entity\State;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -23,31 +25,40 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
             }
             $event->setStarttime($randomDate);
 
-            $event->setName('Soirée n°'.$i.' du '.$randomDate->format('Y-m-d H:i:s'));
+            $event->setName('Soirée n°' . $i . ' du ' . $randomDate->format('Y-m-d H:i:s'));
             $lastinscriptiondate = clone $randomDate;
             $lastinscriptiondate->modify('-1 day');
-            $event->setDuration(mt_rand(1, 30)*10);
+            $event->setDuration(mt_rand(1, 30) * 10);
 
             $event->setLastInscriptionTime($lastinscriptiondate);
 
             $event->setInformation('');
 
-            switch (rand(0,3)) {
+            switch (rand(0, 6)) {
                 case 0:
                     $event->setState($this->getReference(StateFixtures::STATE_CREATING_REFERENCE));
                     break;
                 case 1:
-                    $event->setState($this->getReference(StateFixtures::STATE_PENDING_REFERENCE));
+                    $event->setState($this->getReference(StateFixtures::STATE_OPENED_REFERENCE));
                     break;
                 case 2:
                     $event->setState($this->getReference(StateFixtures::STATE_CLOSED_REFERENCE));
                     break;
                 case 3:
-                    $event->setState($this->getReference(StateFixtures::STATE_OPENED_REFERENCE));
+                    $event->setState($this->getReference(StateFixtures::STATE_PENDING_REFERENCE));
+                    break;
+                case 4:
+                    $event->setState($this->getReference(StateFixtures::STATE_FINISHED_REFERENCE));
+                    break;
+                case 5:
+                    $event->setState($this->getReference(StateFixtures::STATE_CANCELLED_REFERENCE));
+                    break;
+                case 6:
+                    $event->setState($this->getReference(StateFixtures::STATE_HISTORISED_REFERENCE));
                     break;
             }
 
-            switch (rand(0,3)) {
+            switch (rand(0, 3)) {
                 case 0:
                     $event->setCampus($this->getReference(CampusFixtures::CAMPUS_NANTES_REFERENCE));
                     break;
@@ -62,7 +73,7 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                     break;
             }
 
-            switch (rand(0,5)) {
+            switch (rand(0, 5)) {
                 case 0:
                     $event->setLocation($this->getReference(LocationFixtures::LOCATION_1_REFERENCE));
                     break;
@@ -83,20 +94,24 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
                     break;
             }
 
-            switch (rand(0,1)) {
-                case 0:
-                    $event->setPlanner($this->getReference(ParticipantFixtures::PARTICIPANT_JULIE_REFERENCE));
-                    break;
-                case 1:
-                    $event->setPlanner($this->getReference(ParticipantFixtures::PARTICIPANT_MARTIN_REFERENCE));
-                    break;
+            for ($i = 0; $i < ParticipantFixtures::PARTICIPANT_NUMBER - 1; $i++) {
+                $planner = $this->getReference('PARTICIPANT_' . $i . '_REFERENCE');
+                $event->setPlanner($planner);
             }
 
-            $event->setPlaces(mt_rand(1, 12)*5);
+            $nbPlaces = mt_rand(1, 12) * 5;
+            $event->setPlaces($nbPlaces);
+
+            if ($event->getState()->getLabel() == State::STATE_OPENED) {
+                for ($i = 0; $i < rand(0, $nbPlaces); $i++) {
+                    $participantId = rand(0, ParticipantFixtures::PARTICIPANT_NUMBER - 1);
+                    $participant = $this->getReference('PARTICIPANT_' . $participantId . '_REFERENCE');
+                    $event->addParticipant($participant);
+                }
+            }
 
             $manager->persist($event);
         }
-
         $manager->flush();
     }
 

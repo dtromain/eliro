@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Campus;
+
 use App\Entity\Participant;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Faker\Factory;
@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class ParticipantFixtures extends Fixture
 {
     private $encoder;
+
+    public const PARTICIPANT_NUMBER = 50;
 
     public const PARTICIPANT_ROOT_REFERENCE = 'participant-root';
     public const PARTICIPANT_MARTIN_REFERENCE = 'participant-martin';
@@ -65,7 +67,7 @@ class ParticipantFixtures extends Fixture
         $this->setReference(self::PARTICIPANT_JULIE_REFERENCE, $julie);
         $manager->persist($julie);
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < self::PARTICIPANT_NUMBER; $i++) {
             $participant = new Participant();
             $participant->setFirstname($faker->firstName);
             $participant->setLastname($faker->lastName);
@@ -75,7 +77,7 @@ class ParticipantFixtures extends Fixture
             $participant->setPassword(
                 $this->encoder->encodePassword($participant, $faker->password)
             );
-            $rand = rand(1,100);
+            $rand = rand(1, self::PARTICIPANT_NUMBER);
             switch ($rand) {
                 case ($rand <= 40):
                     $participant->setCampus($this->getReference(CampusFixtures::CAMPUS_NANTES_REFERENCE));
@@ -91,6 +93,7 @@ class ParticipantFixtures extends Fixture
                     break;
 
             }
+            $this->setReference('PARTICIPANT_'.$i.'_REFERENCE', $participant);
             $manager->persist($participant);
         }
         $manager->flush();

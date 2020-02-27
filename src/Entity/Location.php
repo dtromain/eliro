@@ -53,7 +53,7 @@ class Location
 
     public function __toString(): ?string
     {
-        return $this->name;
+        return '' . $this->name .' - ' . $this->getCity()->getName();
     }
 
     public function __construct()

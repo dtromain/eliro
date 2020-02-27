@@ -47,11 +47,7 @@ class RegisterFormType extends AbstractType
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
                 'label' => 'Campus'
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Enregistrement'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -46,9 +46,7 @@ class ProfileFormType extends AbstractType
                 'second_options' => ['label' => 'Confirmation'],
                 'mapped'=>false,
                 'invalid_message' => 'Les champs mot de passe et confirmation ne correspondent pas'
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Save'])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

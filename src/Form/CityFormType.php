@@ -19,9 +19,6 @@ class CityFormType extends AbstractType
             ])
             ->add('postcode', TextType::class, [
                 'label' => 'Code postal'
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer'
             ]);
     }
 

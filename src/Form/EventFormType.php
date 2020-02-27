@@ -53,9 +53,6 @@ class EventFormType extends AbstractType
             ->add('campus', EntityType::class, [
                 'label' => 'Site',
                 'class' => Campus::class
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Enregistrement'
             ]);
     }
 
