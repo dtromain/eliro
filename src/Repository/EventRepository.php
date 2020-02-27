@@ -31,6 +31,7 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.campus = :campusId')
             ->setParameter('campusId', $listFilter['campus'])
             ->leftJoin('e.participants', 'participants')
+            ->innerJoin('e.state', 'state')
             ->orderBy('e.starttime');
 
         if ($listFilter['search'] != "") {
@@ -81,23 +82,24 @@ class EventRepository extends ServiceEntityRepository
         $qb->andWhere($orStatements);
 
         $orStatementsBis = $qb->expr()->orX();
+
         $orStatementsBis->add(
             $qb->expr()->eq('e.planner', $qb->expr()->literal($listFilter['user']))
         );
-        /*$orStatementsBis->add(
-            $qb->expr()->eq('e.state', State::STATE_OPENED )
+        $orStatementsBis->add(
+            $qb->expr()->eq('state.label',$qb->expr()->literal(State::STATE_OPENED))
         );
         $orStatementsBis->add(
-            $qb->expr()->eq('e.state', State::STATE_CLOSED )
-        );*/
-        $orStatementsBis->add(
-            $qb->expr()->eq('e.state',$qb->expr()->literal(State::STATE_PENDING)  )
+            $qb->expr()->eq('state.label',$qb->expr()->literal(State::STATE_CLOSED))
         );
-        /*$orStatementsBis->add(
-            $qb->expr()->eq('e.state', State::STATE_FINISHED )
-        );*/
         $orStatementsBis->add(
-            $qb->expr()->eq('e.state', $qb->expr()->literal(State::STATE_CANCELLED))
+            $qb->expr()->eq('state.label',$qb->expr()->literal(State::STATE_PENDING))
+        );
+        $orStatementsBis->add(
+            $qb->expr()->eq('state.label',$qb->expr()->literal(State::STATE_FINISHED))
+        );
+        $orStatementsBis->add(
+            $qb->expr()->eq('state.label', $qb->expr()->literal(State::STATE_CANCELLED) )
         );
         $qb->andWhere($orStatementsBis);
 
