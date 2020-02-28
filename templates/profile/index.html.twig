@@ -22,43 +22,46 @@
                 <div class="card-body">
 
                     {{ form_start(form) }}
-                        <div class="my-custom-class-for-errors">
-                            {{ form_errors(form) }}
-                        </div>
+                    <div class="my-custom-class-for-errors">
+                        {{ form_errors(form) }}
+                    </div>
 
-                        <div class="row">
-                            <div class="col">
-                                {{ form_row(form.firstname) }}
-                            </div>
-                            <div class="col" id="some-custom-id">
-                                {{ form_row(form.lastname) }}
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            {{ form_row(form.firstname) }}
                         </div>
-                        {{ form_row(form.phone) }}
-                        {{ form_row(form.mail) }}
-                        {{ form_row(form.username) }}
-                        {{ form_row(form.old_password) }}
-                        <div class="row">
-                            <div class="col-6">{{ form_row(form.plain_password.first) }}</div>
-                            <div class="col-6">{{ form_row(form.plain_password.second) }}</div>
+                        <div class="col-md-6 col-sm-12" id="some-custom-id">
+                            {{ form_row(form.lastname) }}
                         </div>
-                        <div class="row">
-                            <div class="col-4"></div>
-                            <button class="col-2 btn btn-danger btn-icon-split btn-lg" type="reset">
-                                <span class="icon text-white-50">
+                    </div>
+                    {{ form_row(form.phone) }}
+                    {{ form_row(form.mail) }}
+                    {{ form_row(form.username) }}
+                    {{ form_row(form.old_password) }}
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">{{ form_row(form.plain_password.first) }}</div>
+                        <div class="col-md-6 col-sm-12">{{ form_row(form.plain_password.second) }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-md-2 col-sm-12">
+                            <button class="btn btn-danger btn-icon-split btn-lg" type="reset" >
+                                <span class="icon text-white">
                                   <i class="fas fa-backspace"></i>
                                 </span>
                                 <span class="text">Annuler</span>
                             </button>
-                            <div class="mr-1"></div>
-                            <button class="col-2 btn btn-primary  btn-icon-split btn-lg" type="submit">
-                                    <span class="icon text-white-50">
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+                            <button class="btn btn-primary btn-icon-split btn-lg" type="submit">
+                                    <span class="icon text-white">
                                       <i class="fas fa-save"></i>
                                     </span>
                                 <span class="text">Enregistrer</span>
                             </button>
-                            <div class="col-4"></div>
                         </div>
+                        <div class="col-4"></div>
+                    </div>
                     {{ form_end(form) }}
 
                 </div>
