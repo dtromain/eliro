@@ -16,27 +16,37 @@
             <div class="card shadow mb-4">
 
                 <div class="card-body">
-                    <p>Nom de la sortie: {{ event.name }}</p>
-                    <p>Date et heure de la sortie: {{ event.starttime|date("d/m/Y H:i") }}</p>
-                    <p>Date limite d'inscription: {{ event.lastInscriptionTime|date("d/m/Y H:i") }}</p>
-                    <p>Nombre de places: {{ event.places }}</p>
-                    <p>Durée: {{ event.duration }} minutes</p>
-                    <p>Description et infos: {{ event.information }}</p>
-                    <p>Ville organisatrice: {{ event.campus.name }}</p>
-                    <p>Lieu: {{ event.location.name }}</p>
-                    <p>Rue:{{ event.location.street }}</p>
-                    <p>Code postal:{{ event.location.city.postcode }}</p>
-                    <p>Lattitude: {{ event.location.latitude }}</p>
-                    <p>Longitude: {{ event.location.longitude }}</p>
-                    {% if event.reason != null %}
-                        <b class="text-danger text-bold">Annulé: </b><p class="text-danger">{{ event.reason }}</p>
-                    {% endif %}
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <p><b>Nom de la sortie :</b> {{ event.name }}</p>
+                            <p><b>Date et heure de la sortie :</b> {{ event.starttime|date("d/m/Y H:i") }}</p>
+                            <p><b>Date limite d'inscription :</b> {{ event.lastInscriptionTime|date("d/m/Y H:i") }}</p>
+                            <p><b>Nombre de places :</b> {{ event.places }}</p>
+                            <p><b>Durée :</b> {{ event.duration }} minutes</p>
+                            <p><b>Description et infos :</b> {{ event.information }}</p>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <p><b>Ville organisatrice :</b> {{ event.campus.name }}</p>
+                            <p><b>Lieu :</b> {{ event.location.name }}</p>
+                            <p><b>Rue :</b> {{ event.location.street }}</p>
+                            <p><b>Code postal :</b> {{ event.location.city.postcode }}</p>
+                            <p><b>Lattitude :</b> {{ event.location.latitude }}</p>
+                            <p><b>Longitude :</b> {{ event.location.longitude }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {% if event.reason != null %}
+                                <b class="text-danger text-bold">Annulé: </b><p class="text-danger">{{ event.reason }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
 
                     <!-- DataTales Example -->
                     <div class="card shadow md-4">
 
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-y:auto; max-height: 350px;">
                                 <table class="table table-bordered table-hover table-striped tablesorter" border="1">
                                     <tr>
                                         <th>Pseudo</th>
