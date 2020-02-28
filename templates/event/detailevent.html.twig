@@ -56,7 +56,7 @@
                                         <tr>
                                             <td>
                                                 {% if participant != app.user %}
-                                                    <a href="{{ path('profile', {'username': participant.username}) }}">{{ participant.username }}</a>
+                                                    <a href="{{ path('profile', {'id': participant.id}) }}">{{ participant.username }}</a>
                                                 {% else %}
                                                     {{ participant.username }}
                                                 {% endif %}
