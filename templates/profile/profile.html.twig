@@ -9,7 +9,7 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-4 text-gray-800 text-center mt-4">Profil</h1>
+        <h1 class="h3 mb-4 text-gray-800 text-center mt-4">{{ participant.username }}</h1>
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -19,12 +19,12 @@
 
                 <div class="card-body">
 
-                    {{ participant.username }}<br>
-                    Prénom: {{ participant.firstname }}<br>
-                    Nom: {{ participant.lastname }}<br>
-                    Téléphone: {{ participant.phone }}<br>
-                    Mail: {{ participant.mail }}<br>
-                    Ville de rattachement: {{ participant.campus }}
+
+                    <b>Prénom:</b> {{ participant.firstname }}<br>
+                    <b>Nom:</b> {{ participant.lastname }}<br>
+                    <b>Téléphone:</b> {{ participant.phone }}<br>
+                    <b>Mail:</b> {{ participant.mail }}<br>
+                    <b>Ville de rattachement:</b> {{ participant.campus }}
 
                 </div>
             </div>
