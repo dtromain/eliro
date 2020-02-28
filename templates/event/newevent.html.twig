@@ -34,41 +34,50 @@
                     {% if update == false %}
                         <div class="row">
                             <div class="col-4"></div>
-                            <button class="col-2 btn btn-danger btn-icon-split btn-lg" type="reset">
-                                    <span class="icon text-white-50">
-                                      <i class="fas fa-backspace"></i>
-                                    </span>
-                                <span class="text">Annuler</span>
-                            </button>
-                            <div class="mr-1"></div>
-                            <button class="col-2 btn btn-primary  btn-icon-split btn-lg" type="submit">
+                            <div class="col-2">
+                                <button class="btn btn-danger btn-icon-split btn-lg" type="reset">
                                         <span class="icon text-white-50">
-                                          <i class="fas fa-save"></i>
+                                          <i class="fas fa-backspace"></i>
                                         </span>
-                                <span class="text">Enregistrer</span>
-                            </button>
+                                    <span class="text">Annuler</span>
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary  btn-icon-split btn-lg" type="submit">
+                                            <span class="icon text-white-50">
+                                              <i class="fas fa-save"></i>
+                                            </span>
+                                    <span class="text">Enregistrer</span>
+                                </button>
+                            </div>
                             <div class="col-4"></div>
                         </div>
                     {% else %}
                         <div class="row">
-                            <button class="btn btn-danger btn-lg" type="reset">
-                                <span class="icon text-white-50">
-                                  <i class="fas fa-backspace"></i>
-                                </span>
-                                <span class="text">Annuler</span>
-                            </button>
-                            <button class="btn btn-primary btn-lg" type="submit">
-                                <span class="icon text-white-50">
-                                  <i class="fas fa-save"></i>
-                                </span>
-                                <span class="text">Enregistrer</span>
-                            </button>
-                            <a href="{{ path('event_publish', {'id': event.id}) }}" class="btn btn-secondary btn-lg" type="submit">
-                                <span class="icon text-white-50">
-                                  <i class="fas fa-backspace"></i>
-                                </span>
-                                <span class="text">Publier</span>
-                            </a>
+                            <div class="col-2">
+                                <button class="btn btn-danger btn-lg" type="reset">
+                                    <span class="icon text-white-50">
+                                      <i class="fas fa-backspace"></i>
+                                    </span>
+                                    <span class="text">Annuler</span>
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary btn-lg" type="submit">
+                                    <span class="icon text-white-50">
+                                      <i class="fas fa-save"></i>
+                                    </span>
+                                    <span class="text">Enregistrer</span>
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <a href="{{ path('event_publish', {'id': event.id}) }}" class="btn btn-secondary btn-lg" type="submit">
+                                    <span class="icon text-white-50">
+                                      <i class="fas fa-backspace"></i>
+                                    </span>
+                                    <span class="text">Publier</span>
+                                </a>
+                            </div>
                         </div>
                     {% endif %}
                     {{ form_end(form) }}

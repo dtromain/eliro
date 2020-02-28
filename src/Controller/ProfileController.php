@@ -18,17 +18,18 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class ProfileController extends AbstractController
 {
     /**
-     * @Route("/profile/{username?}", name="profile")
+     * @Route("/profile/{id?}", name="profile")
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @param EntityManagerInterface $em
      * @param ParticipantRepository $pr
-     * @param string $username
+     * @param int|null $id
      * @return RedirectResponse|Response
      */
-    public function index(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $em, ParticipantRepository $pr, string $username = null) {
-        $participant = $pr->findOneBy(['username'=>$username]);
-        if($participant == null){
+    public function index(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $em, ParticipantRepository $pr, int $id = null) {
+        if($id != null) {
+            $participant = $pr->find($id);
+        } else {
             $participant = $this->getUser();
             $form = $this->createForm(ProfileFormType::class, $participant);
             $form->handleRequest($request);

@@ -28,6 +28,9 @@
                     <p>Code postal:{{ event.location.city.postcode }}</p>
                     <p>Lattitude: {{ event.location.latitude }}</p>
                     <p>Longitude: {{ event.location.longitude }}</p>
+                    {% if event.reason != null %}
+                        <b class="text-danger text-bold">Annulé: </b><p class="text-danger">{{ event.reason }}</p>
+                    {% endif %}
 
                     <!-- DataTales Example -->
                     <div class="card shadow md-4">
@@ -93,9 +96,6 @@
                         </span>
                             <span class="text">Retour</span>
                         </a>
-                    {% endif %}
-                    {% if event.reason != null %}
-                        <p>Annulé: {{ event.reason }}</p>
                     {% endif %}
                 </div>
             </div>

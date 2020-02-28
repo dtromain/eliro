@@ -41,7 +41,7 @@
                             {{ form_row(form.isParticipating) }}
                             {{ form_row(form.isNotParticipating) }}
                             {{ form_row(form.isPassed) }}
-                            <button class="btn btn-primary btn-icon-split" type="submit">
+                            <button class="btn btn-primary btn-icon-split btn-lg" type="submit">
                         <span class="icon text-white-50">
                           <i class="fas fa-filter"></i>
                         </span>
@@ -87,7 +87,7 @@
                                 </td>
                                 <td>
                                     {% if  event.planner != app.user %}
-                                        <a href="{{ path('profile', {'username': event.planner.username}) }}">{{ event.planner }}</a>
+                                        <a href="{{ path('profile', {'id': event.planner.id}) }}">{{ event.planner }}</a>
                                     {% else %}
                                         {{ event.planner }}
                                     {% endif %}
