@@ -318,9 +318,9 @@ class EventController extends AbstractController
 
         } else if($event->getState()->getLabel() == State::STATE_CLOSED) {
             $now = new DateTime();
+            $event->removeParticipant($this->getUser());
 
             if($event->getLastInscriptionTime() >= $now) {
-                $event->removeParticipant($this->getUser());
                 $state = $sr->findOneBy(['label'=>State::STATE_OPENED]);
                 $event->setState($state);
             }
